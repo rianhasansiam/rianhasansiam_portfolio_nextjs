@@ -34,7 +34,7 @@ const Education = () => {
       duration: '2019 - 2021',
       location: 'Mirpur-1,Dhaka, Bangladesh',
       description: 'Completed HSC in Science group with distinction, developing strong foundations in mathematics and sciences.',
-      grade: 'GPA: 4.5/5.0',
+      grade: 'GPA: 5.0/5.0',
       highlights: [
         'Science Group (Mathematics, Physics, Chemistry)',
         'Computer Science Fundamentals',
@@ -50,7 +50,7 @@ const Education = () => {
       duration: '2011 - 2021',
       location: 'Mirpur-1,Dhaka, Bangladesh',
       description: 'Completed SSC in Science group.',
-      grade: 'CGPA: 3.8/4.0',
+      grade: 'CGPA: 5.0/5.0',
       highlights: [
         'Science Group (Mathematics, Physics, Chemistry)',
       ],
