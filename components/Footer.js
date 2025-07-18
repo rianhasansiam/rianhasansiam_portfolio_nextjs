@@ -31,11 +31,11 @@ const Footer = () => {
   }
 
   return (
-    <footer className="bg-gray-900/90 backdrop-blur-sm border-t border-gray-800 relative">
+    <footer className="bg-gray-900/90 backdrop-blur-sm border-t border-gray-800 relative ">
       {/* Background Pattern */}
       <div className="absolute inset-0 bg-pattern opacity-5"></div>
       
-      <div className="container-custom relative z-10">
+      <div className="w-[90vw] mx-auto lg:container-custom relative z-10">
         {/* Main Footer Content */}
         <div className="py-16">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
