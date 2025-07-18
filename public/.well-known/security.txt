@@ -1,0 +1,7 @@
+Contact: mailto:rianhasan1971@gmail.com
+Encryption: https://keybase.io/rianhasansiam/pgp_keys.asc
+Acknowledgments: https://rianhasansiam.me/security/acknowledgments
+Preferred-Languages: en, bn
+Canonical: https://rianhasansiam.me/.well-known/security.txt
+Policy: https://rianhasansiam.me/security/policy
+Hiring: https://rianhasansiam.me/careers
