@@ -64,14 +64,14 @@
       "short_name": "Projects",
       "description": "View my development projects",
       "url": "/#projects",
-      "icons": [{ "src": "/favicon-192x192.png", "sizes": "192x192" }]
+      "icons": [{ "src": "/android-chrome-192x192.png", "sizes": "192x192" }]
     },
     {
       "name": "Contact",
       "short_name": "Contact",
       "description": "Get in touch with me",
       "url": "/#contact",
-      "icons": [{ "src": "/favicon-192x192.png", "sizes": "192x192" }]
+      "icons": [{ "src": "/android-chrome-192x192.png", "sizes": "192x192" }]
     }
   ],
   "related_applications": [
