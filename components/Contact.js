@@ -5,7 +5,7 @@ import { useInView } from 'react-intersection-observer'
 import { useState, useRef } from 'react'
 import { Mail, Phone, MapPin, Send, MessageCircle } from 'lucide-react'
 import { FaGithub, FaLinkedin, FaInstagram, FaTelegram, FaFacebook } from 'react-icons/fa'
-import { toast } from 'react-toastify'
+import { useToast } from './CustomToast'
 import emailjs from '@emailjs/browser'
 
 const Contact = () => {
@@ -14,6 +14,7 @@ const Contact = () => {
     threshold: 0.1,
   })
 
+  const { toast } = useToast()
   const form = useRef()
 
   const [formData, setFormData] = useState({
@@ -47,26 +48,22 @@ const Contact = () => {
       }
 
       // EmailJS credentials directly in the code
-      const serviceId = 'service_pz0sdpe';
-      const templateId = 'template_h6zk6ln';
-      const publicKey = 'hjzxYFnNkGw8aq-nM';
+      const serviceId = 'service_yrlxuma';
+      const templateId = 'template_0217uod';
+      const publicKey = 'TLs9u-trXhMYUsnMT';
 
-      const attemptSend = (retryCount = 0) => {
+  const attemptSend = (retryCount = 0) => {
         emailjs
           .send(
             serviceId, 
             templateId, 
-            templateParams, 
-            {
-              publicKey: publicKey,
-            }
+    templateParams, 
+    // Use string form for wider EmailJS compatibility
+    publicKey
           )
           .then(
             () => {
-              toast.success("Message sent successfully! I will get back to you soon.", {
-                position: "top-center",
-                autoClose: 3000
-              })
+              toast.success("Message sent successfully! I will get back to you soon.")
               setFormData({ name: '', email: '', subject: '', message: '' })
               setIsSubmitting(false)
             },
@@ -78,10 +75,7 @@ const Contact = () => {
                   attemptSend(retryCount + 1)
                 }, 2000 * (retryCount + 1))
               } else {
-                toast.error("Message couldn't be sent after multiple attempts. Please try again later.", {
-                  position: "top-center",
-                  autoClose: 5000
-                })
+                toast.error("Message couldn't be sent after multiple attempts. Please try again later.")
                 setIsSubmitting(false)
               }
             }
@@ -348,7 +342,7 @@ const Contact = () => {
           </motion.div>
         </div>
       </div>
-    </section>
+  </section>
   )
 }
 

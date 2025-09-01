@@ -9,8 +9,6 @@ import Projects from '../components/Projects'
 import About from '../components/About'
 import Contact from '../components/Contact'
 import Footer from '../components/Footer'
-import { ToastContainer } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
 import AOS from 'aos'
 import 'aos/dist/aos.css'
 
@@ -40,18 +38,6 @@ export default function Home() {
       <footer>
         <Footer />
       </footer>
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
-      />
     </>
   )
 }

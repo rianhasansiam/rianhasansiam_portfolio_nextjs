@@ -2,6 +2,7 @@ import './globals.css'
 import { Inter } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
+import { CustomToastProvider } from '../components/CustomToast'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -614,9 +615,11 @@ export default function RootLayout({ children }) {
         <meta name="google-translate-customization" content="your-google-translate-customization-code" />
       </head>
       <body className={inter.className}>
-        <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
-          {children}
-        </div>
+        <CustomToastProvider>
+          <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
+            {children}
+          </div>
+        </CustomToastProvider>
   {/* Vercel Analytics & Speed Insights */}
   <Analytics />
   <SpeedInsights />
