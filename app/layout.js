@@ -1,5 +1,7 @@
 import './globals.css'
 import { Inter } from 'next/font/google'
+import { Analytics } from '@vercel/analytics/react'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -615,6 +617,9 @@ export default function RootLayout({ children }) {
         <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
           {children}
         </div>
+  {/* Vercel Analytics & Speed Insights */}
+  <Analytics />
+  <SpeedInsights />
       </body>
     </html>
   )

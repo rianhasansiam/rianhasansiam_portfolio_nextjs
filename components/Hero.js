@@ -114,7 +114,7 @@ const Hero = () => {
                   rel="noopener noreferrer"
                   whileHover={{ scale: 1.2, y: -2 }}
                   whileTap={{ scale: 0.9 }}
-                  className={`text-2xl text-gray-400 transition-colors duration-300 ${social.color} mt-10`}
+                  className={`text-2xl text-gray-400 transition-colors duration-300 ${social.color} mt-10 z-50`}
                 >
                   <social.icon />
                 </motion.a>
