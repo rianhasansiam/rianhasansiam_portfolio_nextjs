@@ -1,9 +1,10 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { motion, useAnimation } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import { User, Heart, Target, Coffee, Code, Gamepad2, Tv } from 'lucide-react'
 import Image from 'next/image'
+import { useEffect, useState } from 'react'
 
 const About = () => {
   const [ref, inView] = useInView({
@@ -11,12 +12,40 @@ const About = () => {
     threshold: 0.1,
   })
 
+  const [counters, setCounters] = useState([0, 0, 0, 0])
+  const controls = useAnimation()
+
   const stats = [
-    { number: '50+', label: 'Projects Completed' },
-    { number: '2+', label: 'Years Experience' },
-    { number: '15+', label: 'Technologies Mastered' },
-    { number: '100%', label: 'Client Satisfaction' },
+    { number: 50, label: 'Projects Completed', suffix: '+' },
+    { number: 2, label: 'Years Experience', suffix: '+' },
+    { number: 15, label: 'Technologies Mastered', suffix: '+' },
+    { number: 100, label: 'Client Satisfaction', suffix: '%' },
   ]
+
+  useEffect(() => {
+    if (inView) {
+      stats.forEach((stat, index) => {
+        let startValue = 0
+        const duration = 2000 // 2 seconds
+        const increment = stat.number / (duration / 16) // 60fps
+        
+        const timer = setInterval(() => {
+          startValue += increment
+          if (startValue >= stat.number) {
+            startValue = stat.number
+            clearInterval(timer)
+          }
+          setCounters(prev => {
+            const newCounters = [...prev]
+            newCounters[index] = Math.floor(startValue)
+            return newCounters
+          })
+        }, 16)
+        
+        return () => clearInterval(timer)
+      })
+    }
+  }, [inView])
 
   const interests = [
     { icon: Code, title: 'Programming', description: 'Love solving complex problems with clean, efficient code' },
@@ -108,10 +137,21 @@ const About = () => {
               className="grid grid-cols-2 gap-4"
             >
               {stats.map((stat, index) => (
-                <div key={index} className="text-center">
-                  <div className="text-3xl font-bold text-white mb-1">{stat.number}</div>
+                <motion.div 
+                  key={index} 
+                  className="glass-effect p-4 rounded-xl hover:scale-105 transition-transform duration-300"
+                  whileHover={{ y: -5 }}
+                >
+                  <motion.div 
+                    className="text-4xl font-bold gradient-text mb-1"
+                    initial={{ scale: 0 }}
+                    animate={inView ? { scale: 1 } : { scale: 0 }}
+                    transition={{ delay: index * 0.1, type: 'spring', stiffness: 200 }}
+                  >
+                    {counters[index]}{stat.suffix}
+                  </motion.div>
                   <div className="text-sm text-gray-400">{stat.label}</div>
-                </div>
+                </motion.div>
               ))}
             </motion.div>
           </motion.div>

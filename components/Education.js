@@ -115,8 +115,16 @@ const Education = () => {
         <div className="max-w-4xl mx-auto">
           {/* Timeline */}
           <div className="relative">
-            {/* Timeline line */}
-            <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gradient-to-b from-blue-500 to-purple-600 rounded-full hidden md:block"></div>
+            {/* Timeline line - background */}
+            <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gray-700 rounded-full hidden md:block"></div>
+            
+            {/* Animated Timeline Progress */}
+            <motion.div 
+              className="absolute left-1/2 transform -translate-x-1/2 w-1 bg-gradient-to-b from-blue-500 to-purple-600 rounded-full hidden md:block"
+              initial={{ height: 0 }}
+              animate={inView ? { height: '100%' } : { height: 0 }}
+              transition={{ duration: 2, ease: 'easeOut' }}
+            ></motion.div>
 
             {educationData.map((item, index) => (
               <motion.div
@@ -127,7 +135,19 @@ const Education = () => {
                 }`}
               >
                 {/* Timeline dot */}
-                <div className="absolute left-1/2 transform -translate-x-1/2 w-6 h-6 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full border-4 border-gray-800 z-10 hidden md:block"></div>
+                <motion.div 
+                  className="absolute left-1/2 transform -translate-x-1/2 w-6 h-6 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full border-4 border-gray-800 z-10 hidden md:block"
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={inView ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }}
+                  transition={{ delay: index * 0.3, type: 'spring', stiffness: 200 }}
+                  whileHover={{ scale: 1.5 }}
+                >
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full"
+                    animate={{ scale: [1, 1.5, 1], opacity: [0.5, 0, 0.5] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                  />
+                </motion.div>
 
                 {/* Content card */}
                 <div className={`w-full md:w-5/12 ${index % 2 === 0 ? 'md:pr-8' : 'md:pl-8'}`}>

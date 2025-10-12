@@ -1,9 +1,9 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import { useState } from 'react'
-import { ExternalLink, Github, Eye } from 'lucide-react'
+import { ExternalLink, Github, Eye, X } from 'lucide-react'
 import Image from 'next/image'
 
 const Projects = () => {
@@ -13,10 +13,24 @@ const Projects = () => {
   })
 
   const [filter, setFilter] = useState('all')
+  const [selectedProject, setSelectedProject] = useState(null)
 
   const projects = [
     {
       id: 1,
+      title: 'DigiCam Market',
+      description: 'A full-stack, production-ready e-commerce platform featuring secure authentication, real-time cart management, live chat support, admin dashboard, and comprehensive API security.',
+      longDescription: 'A modern e-commerce solution built with Next.js 15 and React 19, featuring NextAuth authentication with Google OAuth, real-time WebSocket-powered chat system, Redux Toolkit state management, comprehensive admin dashboard with product/order/user management, coupon system, and advanced security with CORS protection, role-based authorization, and encrypted passwords.',
+      image: '/digiCamCoverPic.png',
+      technologies: ['Next.js', 'React', 'MongoDB', 'NextAuth', 'Redux Toolkit', 'Socket.io', 'Tailwind CSS'],
+      liveUrl: 'https://digicammarket.com',
+      githubUrl: 'https://github.com/rianhasansiam/digicam',
+      category: 'fullstack',
+      featured: true,
+      gradient: 'from-blue-500 to-purple-600',
+    },
+     {
+      id: 2,
       title: 'Sahaba Store',
       description: 'An e-commerce platform specializing in Islamic products, books, and accessories with secure payment integration and user-friendly interface.',
       longDescription: 'A comprehensive e-commerce solution built with React and Node.js, featuring user authentication, product catalog, shopping cart, secure payment processing with Stripe, and admin dashboard for inventory management.',
@@ -29,7 +43,7 @@ const Projects = () => {
       gradient: 'from-yellow-500 to-red-500',
     },
     {
-      id: 2,
+      id: 3,
       title: 'Scholarship Management System',
       description: 'A comprehensive web application for scholarship management with advanced search, application tracking, and analytics.',
       longDescription: 'Built with React and Express.js, this system allows students to search and apply for scholarships while providing administrators with powerful tools to manage applications, track progress, and generate reports.',
@@ -42,7 +56,7 @@ const Projects = () => {
       gradient: 'from-blue-500 to-green-500',
     },
     {
-      id: 3,
+      id: 4,
       title: 'COZYSTAY Hotel',
       description: 'A modern hotel booking platform with room listings, availability checking, and secure booking system.',
       longDescription: 'A responsive hotel booking website featuring room search and filtering, real-time availability checking, booking management, and user authentication with a clean, modern design.',
@@ -55,7 +69,7 @@ const Projects = () => {
       gradient: 'from-purple-500 to-pink-500',
     },
     {
-      id: 4,
+      id: 5,
       title: 'Visa Navigator',
       description: 'A comprehensive visa information and application platform with country-specific requirements and document management.',
       longDescription: 'An intuitive platform that helps users navigate visa requirements for different countries, featuring document checklists, application tracking, and country-specific information.',
@@ -68,7 +82,7 @@ const Projects = () => {
       gradient: 'from-green-500 to-blue-500',
     },
     {
-      id: 5,
+      id: 6,
       title: 'Linggo Bingo',
       description: 'An interactive language learning game that makes vocabulary building fun and engaging through gamification.',
       longDescription: 'A modern language learning app with interactive games, progress tracking, and personalized learning paths to help users improve their vocabulary and language skills.',
@@ -81,7 +95,7 @@ const Projects = () => {
       gradient: 'from-cyan-500 to-blue-500',
     },
     {
-      id: 6,
+      id: 7,
       title: 'Gadget Haven',
       description: 'A comprehensive gadget and electronics platform featuring product reviews, details, and the latest tech trends. Users can explore, review, and discover cutting-edge gadgets and devices.',
       longDescription: 'A modern electronics showcase platform built with React and Firebase, featuring gadget reviews, product catalogs, tech trend analysis, and user-friendly interface for gadget enthusiasts.',
@@ -186,101 +200,97 @@ const Projects = () => {
         {/* Projects Grid */}
         <motion.div
           variants={containerVariants}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          className="grid grid-cols-1 lg:grid-cols-3 gap-8"
         >
-          {filteredProjects.map((project) => (
+          {filteredProjects.map((project, index) => (
             <motion.div
               key={project.id}
               variants={itemVariants}
-              whileHover={{ y: -10 }}
-              className={`project-card group ${project.featured ? 'lg:col-span-2' : ''}`}
+              whileHover={{ y: -10, scale: 1.02 }}
+              className={`group relative overflow-hidden rounded-2xl glass-effect transition-all duration-300 ${
+                project.featured ? 'lg:col-span-2' : 'lg:col-span-1'
+              }`}
             >
-              {/* Project Image */}
-              <div className="relative overflow-hidden h-48 md:h-56">
-                <Image
-                  src={project.image}
-                  alt={project.title}
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-                
-                {/* Project Links Overlay */}
-                <div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4">
-                  <motion.a
-                    href={project.liveUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                    className="flex items-center gap-2 bg-blue-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-600 transition-colors"
-                  >
-                    <ExternalLink size={16} />
-                    Live Demo
-                  </motion.a>
-                  <motion.a
-                    href={project.githubUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                    className="flex items-center gap-2 bg-gray-700 text-white px-4 py-2 rounded-lg font-semibold hover:bg-gray-600 transition-colors"
-                  >
-                    <Github size={16} />
-                    Code
-                  </motion.a>
+              <div className={`flex ${project.featured ? 'flex-col md:flex-row' : 'flex-col'} h-full`}>
+                {/* Image Section */}
+                <div className={`relative ${project.featured ? 'md:w-1/2' : 'w-full h-56'}`}>
+                  <Image
+                    src={project.image}
+                    alt={project.title}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
+                  
+                  {/* Featured Badge */}
+                  {project.featured && (
+                    <div className="absolute top-4 left-4 bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-4 py-1.5 rounded-full text-sm font-semibold shadow-lg">
+                      Featured
+                    </div>
+                  )}
                 </div>
 
-                {/* Featured Badge */}
-                {project.featured && (
-                  <div className="absolute top-4 left-4 bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
-                    Featured
+                {/* Content Section */}
+                <div className={`p-6 flex flex-col ${project.featured ? 'md:w-1/2' : 'w-full'}`}>
+                  <h3 className="text-2xl font-bold text-white mb-3 group-hover:gradient-text transition-colors duration-300">
+                    {project.title}
+                  </h3>
+                  
+                  <p className="text-gray-400 mb-4 text-sm leading-relaxed flex-grow">
+                    {project.description}
+                  </p>
+
+                  {/* Technologies */}
+                  <div className="flex flex-wrap gap-2 mb-6">
+                    {project.technologies.slice(0, 5).map((tech) => (
+                      <span
+                        key={tech}
+                        className="px-3 py-1 bg-gray-700/50 text-gray-300 rounded-full text-xs font-medium"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                    {project.technologies.length > 5 && (
+                      <span className="px-3 py-1 bg-gray-700/50 text-gray-300 rounded-full text-xs font-medium">
+                        +{project.technologies.length - 5} more
+                      </span>
+                    )}
                   </div>
-                )}
-              </div>
 
-              {/* Project Content */}
-              <div className="p-6">
-                <h3 className="text-xl font-bold text-white mb-3 group-hover:text-blue-400 transition-colors duration-300">
-                  {project.title}
-                </h3>
-                
-                <p className="text-gray-400 mb-4 text-sm leading-relaxed">
-                  {project.description}
-                </p>
-
-                {/* Technologies */}
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {project.technologies.map((tech) => (
-                    <span
-                      key={tech}
-                      className="px-3 py-1 bg-gray-700 text-gray-300 rounded-full text-xs font-medium"
+                  {/* Project Links */}
+                  <div className="flex items-center gap-4 mt-auto">
+                    <motion.button
+                      onClick={() => setSelectedProject(project)}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-lg hover:shadow-lg transition-shadow text-sm font-medium"
                     >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-
-                {/* Project Links */}
-                <div className="flex gap-4">
-                  <a
-                    href={project.liveUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors font-medium text-sm"
-                  >
-                    <Eye size={16} />
-                    View Project
-                  </a>
-                  <a
-                    href={project.githubUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-gray-400 hover:text-gray-300 transition-colors font-medium text-sm"
-                  >
-                    <Github size={16} />
-                    Source Code
-                  </a>
+                      <Eye size={16} />
+                      View Details
+                    </motion.button>
+                    <motion.a
+                      href={project.liveUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors font-medium text-sm"
+                    >
+                      <ExternalLink size={16} />
+                      Live
+                    </motion.a>
+                    <motion.a
+                      href={project.githubUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors font-medium text-sm"
+                    >
+                      <Github size={16} />
+                      Source Code
+                    </motion.a>
+                  </div>
                 </div>
               </div>
             </motion.div>
@@ -316,6 +326,109 @@ const Projects = () => {
           </motion.div>
         </motion.div>
       </div>
+
+      {/* Project Modal */}
+      <AnimatePresence>
+        {selectedProject && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSelectedProject(null)}
+              className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50"
+            />
+            
+            {/* Modal */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 50 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 50 }}
+              className="fixed inset-4 md:inset-8 lg:inset-16 z-50 overflow-auto"
+            >
+              <div className="glass-effect rounded-3xl p-6 md:p-8 max-w-5xl mx-auto">
+                {/* Close Button */}
+                <button
+                  onClick={() => setSelectedProject(null)}
+                  className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors bg-gray-800/50 rounded-full p-2"
+                >
+                  <X size={24} />
+                </button>
+
+                {/* Modal Content */}
+                <div className="flex flex-col gap-6">
+                  {/* Image */}
+                  <div className="relative w-full h-64 md:h-96 rounded-2xl overflow-hidden">
+                    <Image
+                      src={selectedProject.image}
+                      alt={selectedProject.title}
+                      fill
+                      className="object-cover"
+                    />
+                    {selectedProject.featured && (
+                      <div className="absolute top-4 left-4 bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-4 py-1.5 rounded-full text-sm font-semibold shadow-lg">
+                        Featured
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Details */}
+                  <div>
+                    <h3 className="text-3xl md:text-4xl font-bold gradient-text mb-4">
+                      {selectedProject.title}
+                    </h3>
+                    <p className="text-gray-300 text-lg leading-relaxed mb-6">
+                      {selectedProject.longDescription || selectedProject.description}
+                    </p>
+
+                    {/* Technologies */}
+                    <div className="mb-6">
+                      <h4 className="text-xl font-semibold text-white mb-3">Technologies Used</h4>
+                      <div className="flex flex-wrap gap-3">
+                        {selectedProject.technologies.map((tech) => (
+                          <span
+                            key={tech}
+                            className={`px-4 py-2 bg-gradient-to-r ${selectedProject.gradient} text-white rounded-lg text-sm font-medium shadow-lg`}
+                          >
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Links */}
+                    <div className="flex gap-4">
+                      <motion.a
+                        href={selectedProject.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        className="flex items-center gap-2 btn-primary"
+                      >
+                        <ExternalLink size={20} />
+                        Live Demo
+                      </motion.a>
+                      <motion.a
+                        href={selectedProject.githubUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        className="flex items-center gap-2 btn-secondary"
+                      >
+                        <Github size={20} />
+                        Source Code
+                      </motion.a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </section>
   )
 }

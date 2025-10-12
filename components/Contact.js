@@ -24,7 +24,23 @@ const Contact = () => {
     message: '',
   })
 
+  const [errors, setErrors] = useState({})
   const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const validateField = (name, value) => {
+    switch (name) {
+      case 'name':
+        return value.length < 2 ? 'Name must be at least 2 characters' : ''
+      case 'email':
+        return !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) ? 'Invalid email address' : ''
+      case 'subject':
+        return value.length < 3 ? 'Subject must be at least 3 characters' : ''
+      case 'message':
+        return value.length < 10 ? 'Message must be at least 10 characters' : ''
+      default:
+        return ''
+    }
+  }
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
@@ -32,10 +48,32 @@ const Contact = () => {
       ...prev,
       [name]: value
     }))
+    
+    // Real-time validation
+    setErrors(prev => ({
+      ...prev,
+      [name]: validateField(name, value)
+    }))
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    
+    // Validate all fields
+    const newErrors = {}
+    Object.keys(formData).forEach(key => {
+      newErrors[key] = validateField(key, formData[key])
+    })
+    
+    setErrors(newErrors)
+    setTouched({ name: true, email: true, subject: true, message: true })
+    
+    // Check if there are any errors
+    if (Object.values(newErrors).some(error => error !== '')) {
+      toast.error('Please fix the errors before submitting')
+      return
+    }
+    
     setIsSubmitting(true)
     
     try {
@@ -263,10 +301,15 @@ const Contact = () => {
                       name="name"
                       value={formData.name}
                       onChange={handleInputChange}
-                      required
-                      className="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
+                      className={`w-full px-4 py-3 bg-gray-800/50 border ${
+                        errors.name ? 'border-red-500' : 'border-gray-700'
+                      } rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300`}
                       placeholder="Rian Hasan Siam"
                     />
+                    {errors.name && (
+                      <p className="text-red-400 text-xs mt-1">{errors.name}</p>
+                    )}
+                    <p className="text-gray-500 text-xs mt-1">{formData.name.length}/50</p>
                   </div>
                   
                   <div>
@@ -279,10 +322,14 @@ const Contact = () => {
                       name="email"
                       value={formData.email}
                       onChange={handleInputChange}
-                      required
-                      className="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
+                      className={`w-full px-4 py-3 bg-gray-800/50 border ${
+                        errors.email ? 'border-red-500' : 'border-gray-700'
+                      } rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300`}
                       placeholder="rianhasan1971@gmail.com"
                     />
+                    {errors.email && (
+                      <p className="text-red-400 text-xs mt-1">{errors.email}</p>
+                    )}
                   </div>
                 </div>
 
@@ -296,10 +343,15 @@ const Contact = () => {
                     name="subject"
                     value={formData.subject}
                     onChange={handleInputChange}
-                    required
-                    className="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
+                    className={`w-full px-4 py-3 bg-gray-800/50 border ${
+                      errors.subject ? 'border-red-500' : 'border-gray-700'
+                    } rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300`}
                     placeholder="Project Discussion"
                   />
+                  {errors.subject && (
+                    <p className="text-red-400 text-xs mt-1">{errors.subject}</p>
+                  )}
+                  <p className="text-gray-500 text-xs mt-1">{formData.subject.length}/100</p>
                 </div>
 
                 <div>
@@ -311,11 +363,16 @@ const Contact = () => {
                     name="message"
                     value={formData.message}
                     onChange={handleInputChange}
-                    required
                     rows={6}
-                    className="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 resize-none"
+                    className={`w-full px-4 py-3 bg-gray-800/50 border ${
+                      errors.message ? 'border-red-500' : 'border-gray-700'
+                    } rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 resize-none`}
                     placeholder="Tell me about your project or idea..."
                   />
+                  {errors.message && (
+                    <p className="text-red-400 text-xs mt-1">{errors.message}</p>
+                  )}
+                  <p className="text-gray-500 text-xs mt-1">{formData.message.length}/500</p>
                 </div>
 
                 <motion.button
