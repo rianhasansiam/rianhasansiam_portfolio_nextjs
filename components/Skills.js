@@ -16,14 +16,14 @@ const Skills = () => {
 
   const skills = [
     { name: 'React', image: 'https://img.icons8.com/?size=100&id=123603&format=png&color=000000', category: 'frontend', stars: 5, color: 'from-blue-400 to-blue-600', bgColor: 'bg-gray-800/50' },
-    { name: 'Next.js', image: 'https://img.icons8.com/?size=100&id=yUdJlcKanVbh&format=png&color=000000', category: 'frontend', stars: 4, color: 'from-gray-800 to-gray-900', bgColor: 'bg-white' },
+    { name: 'Next.js', image: 'https://img.icons8.com/?size=100&id=yUdJlcKanVbh&format=png&color=FFFFFF', category: 'frontend', stars: 4, color: 'from-gray-800 to-gray-900', bgColor: 'bg-black/80 border border-white/30' },
     { name: 'JavaScript', image: 'https://img.icons8.com/?size=100&id=MjuloYXjXHYT&format=png&color=000000', category: 'frontend', stars: 5, color: 'from-yellow-400 to-yellow-600', bgColor: 'bg-gray-800/50' },
     { name: 'TypeScript', image: 'https://img.icons8.com/?size=100&id=uJM6fQYqDaZK&format=png&color=000000', category: 'frontend', stars: 4, color: 'from-blue-500 to-blue-700', bgColor: 'bg-gray-800/50' },
     { name: 'HTML5', image: 'https://img.icons8.com/?size=100&id=20909&format=png&color=000000', category: 'frontend', stars: 5, color: 'from-orange-500 to-red-500', bgColor: 'bg-gray-800/50' },
     { name: 'CSS3', image: 'https://img.icons8.com/?size=100&id=21278&format=png&color=000000', category: 'frontend', stars: 5, color: 'from-blue-500 to-blue-700', bgColor: 'bg-gray-800/50' },
-    { name: 'Tailwind CSS', image: 'https://img.icons8.com/?size=100&id=CIAZz2CYc6Kc&format=png&color=FFFFFF', category: 'frontend', stars: 5, color: 'from-cyan-400 to-cyan-600', bgColor: 'bg-gray-900' },
+    { name: 'Tailwind CSS', image: 'https://img.icons8.com/?size=100&id=CIAZz2CYc6Kc&format=png&color=38bdf8', category: 'frontend', stars: 5, color: 'from-cyan-400 to-cyan-600', bgColor: 'bg-gray-900 border border-cyan-400/30' },
     { name: 'Node.js', image: 'https://img.icons8.com/?size=100&id=54087&format=png&color=000000', category: 'backend', stars: 4, color: 'from-green-500 to-green-700', bgColor: 'bg-gray-800/50' },
-    { name: 'Express.js', image: 'https://img.icons8.com/?size=100&id=2ZOaTclOqD4q&format=png&color=FFFFFF', category: 'backend', stars: 4, color: 'from-gray-600 to-gray-800', bgColor: 'bg-gray-900' },
+    { name: 'Express.js', image: 'https://img.icons8.com/?size=100&id=2ZOaTclOqD4q&format=png&color=FFFFFF', category: 'backend', stars: 4, color: 'from-gray-600 to-gray-800', bgColor: 'bg-gray-900 border border-white/30' },
     { name: 'Prisma', image: 'https://img.icons8.com/?size=100&id=zJh5Gyrd6ZKu&format=png&color=000000', category: 'backend', stars: 4, color: 'from-indigo-500 to-purple-600', bgColor: 'bg-gray-800/50' },
     { name: 'MongoDB', image: 'https://img.icons8.com/?size=100&id=bosfpvRzNOG8&format=png&color=000000', category: 'database', stars: 4, color: 'from-green-600 to-green-800', bgColor: 'bg-gray-800/50' },
     { name: 'PostgreSQL', image: 'https://img.icons8.com/?size=100&id=38561&format=png&color=000000', category: 'database', stars: 4, color: 'from-blue-600 to-blue-800', bgColor: 'bg-gray-800/50' },
