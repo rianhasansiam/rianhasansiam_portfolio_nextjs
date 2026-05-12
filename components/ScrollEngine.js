@@ -1,10 +1,6 @@
-'use client'
+"use client"
 
-import { useEffect, useRef, useState, useCallback } from 'react'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-
-gsap.registerPlugin(ScrollTrigger)
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 const SECTIONS = [
   { id: 'home', label: 'Home' },
@@ -16,112 +12,146 @@ const SECTIONS = [
 ]
 
 export default function ScrollEngine({ children }) {
-  const containerRef = useRef(null)
   const progressRef = useRef(null)
-  const cursorRef = useRef(null)
+  const scrollToSectionRef = useRef(() => {})
   const [activeSection, setActiveSection] = useState(0)
-  const sectionTriggersRef = useRef([])
 
-  // Scroll progress bar
   useEffect(() => {
-    const bar = progressRef.current
-    if (!bar) return
+    let isMounted = true
+    let setupTimer = null
+    let gsapContext = null
+    const createdTriggers = []
 
-    const st = gsap.to(bar, {
-      scaleX: 1,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: document.documentElement,
-        start: 'top top',
-        end: 'bottom bottom',
-        scrub: 0.3,
-      },
-    })
+    const setupScrollEngine = async () => {
+      const [{ gsap }, { ScrollTrigger }, { ScrollToPlugin }] = await Promise.all([
+        import('gsap'),
+        import('gsap/ScrollTrigger'),
+        import('gsap/ScrollToPlugin'),
+      ])
 
-    return () => {
-      if (st.scrollTrigger) st.scrollTrigger.kill()
-      st.kill()
-    }
-  }, [])
+      if (!isMounted) return
 
-  // Track active section — delay to wait for dynamic imports
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      sectionTriggersRef.current.forEach(st => st.kill())
-      sectionTriggersRef.current = []
+      gsap.registerPlugin(ScrollTrigger, ScrollToPlugin)
 
-      SECTIONS.forEach((section, i) => {
-        const el = document.getElementById(section.id)
+      gsapContext = gsap.context(() => {
+        setupTimer = window.setTimeout(() => {
+          const panels = gsap.utils.toArray('.stacked-panel')
+
+          panels.forEach((panel, index) => {
+            if (index === panels.length - 1) return
+
+            const pinTrigger = ScrollTrigger.create({
+              trigger: panel,
+              start: 'bottom bottom',
+              endTrigger: panels[index + 1],
+              end: 'top top',
+              pin: true,
+              pinSpacing: false,
+            })
+
+            createdTriggers.push(pinTrigger)
+          })
+
+          panels.forEach((panel, index) => {
+            if (index === 0) return
+
+            const card = panel.querySelector('.panel-card')
+            if (!card) return
+
+            gsap.fromTo(card,
+              {
+                borderRadius: '48px 48px 0 0',
+              },
+              {
+                borderRadius: '40px 40px 0 0',
+                ease: 'none',
+                scrollTrigger: {
+                  trigger: panel,
+                  start: 'top bottom',
+                  end: 'top 20%',
+                  scrub: 0.4,
+                },
+              }
+            )
+          })
+
+          SECTIONS.forEach((section, index) => {
+            const el = document.getElementById(section.id)
+            if (!el) return
+
+            const sectionTrigger = ScrollTrigger.create({
+              trigger: el,
+              start: 'top center',
+              end: 'bottom center',
+              onEnter: () => setActiveSection(index),
+              onEnterBack: () => setActiveSection(index),
+            })
+
+            createdTriggers.push(sectionTrigger)
+          })
+
+          const progressBar = progressRef.current
+          if (progressBar) {
+            const progressTween = gsap.to(progressBar, {
+              scaleX: 1,
+              ease: 'none',
+              scrollTrigger: {
+                trigger: document.documentElement,
+                start: 'top top',
+                end: 'bottom bottom',
+                scrub: 0.3,
+              },
+            })
+
+            if (progressTween.scrollTrigger) {
+              createdTriggers.push(progressTween.scrollTrigger)
+            }
+          }
+
+          ScrollTrigger.refresh()
+        }, 600)
+      })
+
+      scrollToSectionRef.current = (sectionId) => {
+        const el = document.getElementById(sectionId)
         if (!el) return
 
-        const st = ScrollTrigger.create({
-          trigger: el,
-          start: 'top center',
-          end: 'bottom center',
-          onEnter: () => setActiveSection(i),
-          onEnterBack: () => setActiveSection(i),
+        gsap.to(window, {
+          duration: 1,
+          scrollTo: { y: el, offsetY: 0 },
+          ease: 'power3.inOut',
         })
-        sectionTriggersRef.current.push(st)
-      })
-    }, 1500)
+      }
+    }
+
+    setupScrollEngine()
 
     return () => {
-      clearTimeout(timer)
-      sectionTriggersRef.current.forEach(st => st.kill())
+      isMounted = false
+      scrollToSectionRef.current = () => {}
+
+      if (setupTimer) {
+        window.clearTimeout(setupTimer)
+      }
+
+      createdTriggers.forEach((trigger) => trigger.kill())
+      gsapContext?.revert()
     }
-  }, [])
-
-  // Cursor glow tracking
-  useEffect(() => {
-    const cursor = cursorRef.current
-    if (!cursor) return
-
-    const onMove = (e) => {
-      gsap.to(cursor, {
-        x: e.clientX,
-        y: e.clientY,
-        duration: 0.8,
-        ease: 'power2.out',
-      })
-    }
-
-    window.addEventListener('mousemove', onMove)
-    return () => window.removeEventListener('mousemove', onMove)
-  }, [])
-
-  // ScrollToPlugin
-  useEffect(() => {
-    import('gsap/ScrollToPlugin').then(({ ScrollToPlugin }) => {
-      gsap.registerPlugin(ScrollToPlugin)
-    })
   }, [])
 
   const scrollTo = useCallback((sectionId) => {
-    const el = document.getElementById(sectionId)
-    if (el) {
-      gsap.to(window, {
-        duration: 1.2,
-        scrollTo: { y: el, offsetY: 0 },
-        ease: 'power3.inOut',
-      })
-    }
+    scrollToSectionRef.current(sectionId)
   }, [])
 
   return (
-    <div ref={containerRef} className="noise-overlay">
-      {/* Scroll Progress Bar */}
-      <div
-        ref={progressRef}
-        className="scroll-progress"
-        style={{ transform: 'scaleX(0)' }}
-      />
+    <>
+      <div ref={progressRef} className="scroll-progress" style={{ transform: 'scaleX(0)' }} />
 
-      {/* Side Navigation Dots */}
       <nav className="side-nav" aria-label="Section navigation">
-        {SECTIONS.map((section, i) => (
+        {SECTIONS.map((section, index) => (
           <button
             key={section.id}
-            className={`side-nav-dot ${activeSection === i ? 'active' : ''}`}
+            className={`side-nav-dot ${activeSection === index ? 'active' : ''}`}
             data-label={section.label}
             onClick={() => scrollTo(section.id)}
             aria-label={`Go to ${section.label}`}
@@ -129,11 +159,7 @@ export default function ScrollEngine({ children }) {
         ))}
       </nav>
 
-      {/* Cursor Glow */}
-      <div ref={cursorRef} className="cursor-glow" />
-
-      {/* Content */}
       {children}
-    </div>
+    </>
   )
 }

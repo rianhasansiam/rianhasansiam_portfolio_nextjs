@@ -5,8 +5,8 @@ import Navbar from '../components/Navbar'
 import Hero from '../components/Hero'
 import Footer from '../components/Footer'
 
-// Dynamic imports for scroll-heavy sections (code-split for perf)
-const ScrollEngine = dynamic(() => import('../components/ScrollEngine'), { ssr: false })
+// Dynamic imports for code-splitting
+const ScrollEngine = dynamic(() => import('@/components/ScrollEngine'), { ssr: false })
 const About = dynamic(() => import('../components/About'), { ssr: false })
 const Skills = dynamic(() => import('../components/Skills'), { ssr: false })
 const Projects = dynamic(() => import('../components/Projects'), { ssr: false })
@@ -15,21 +15,21 @@ const Contact = dynamic(() => import('../components/Contact'), { ssr: false })
 
 export default function Home() {
   return (
-    <ScrollEngine>
-      <header>
-        <Navbar />
-      </header>
-      <main role="main">
-        <Hero />
-        <About />
-        <Skills />
-        <Projects />
-        <Education />
-        <Contact />
-      </main>
-      <footer>
+    <>
+      {/* Navbar OUTSIDE ScrollEngine so GSAP pin stacking contexts don't trap it */}
+      <Navbar />
+
+      <ScrollEngine>
+        <main role="main">
+          <Hero />
+          <About />
+          <Skills />
+          <Projects />
+          <Education />
+          <Contact />
+        </main>
         <Footer />
-      </footer>
-    </ScrollEngine>
+      </ScrollEngine>
+    </>
   )
 }
