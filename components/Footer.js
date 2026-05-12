@@ -1,6 +1,5 @@
 'use client'
 
-import { motion } from 'framer-motion'
 import { FaGithub, FaLinkedin, FaInstagram, FaTelegram, FaFacebook, FaHeart } from 'react-icons/fa'
 import { ArrowUp } from 'lucide-react'
 
@@ -24,150 +23,77 @@ const Footer = () => {
   ]
 
   const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    })
+    window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   return (
-    <footer className="bg-gray-900/90 backdrop-blur-sm border-t border-gray-800 relative ">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 bg-pattern opacity-5"></div>
-      
-      <div className="w-[90vw] mx-auto lg:container-custom relative z-10">
-        {/* Main Footer Content */}
+    <footer className="relative border-t border-white/[0.04] bg-[#030308]">
+      <div className="container-custom px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="py-16">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {/* Brand Section */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+            {/* Brand */}
             <div className="lg:col-span-2">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
-                viewport={{ once: true }}
-                className="mb-6"
-              >
-                <div className="flex items-center space-x-3 mb-4">
-                  <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-                    <span className="text-white font-bold text-lg"><img className='w-10 h-10 rounded-full object-cover border-2 border-white/30' src="/rianface.jpg" alt="R" /></span>
-                  </div>
-                  <div>
-                    <h3 className="text-2xl font-bold text-white">Rian Hasan Siam</h3>
-                    <p className="text-blue-400 text-sm">Full Stack Developer</p>
-                  </div>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-full overflow-hidden border border-white/10">
+                  <img src="/rianface.jpg" alt="R" className="w-full h-full object-cover" />
                 </div>
-                <p className="text-gray-400 leading-relaxed max-w-md">
-                  Passionate about creating innovative web solutions with modern technologies. 
-                  Always eager to learn and tackle new challenges in the ever-evolving world of web development.
-                </p>
-              </motion.div>
-
-              {/* Social Links */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                viewport={{ once: true }}
-                className="flex space-x-4"
-              >
-                {socialLinks.map((social, index) => (
-                  <motion.a
-                    key={index}
-                    href={social.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    whileHover={{ scale: 1.1, y: -2 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-gradient-to-r hover:from-blue-500 hover:to-purple-600 transition-all duration-300"
-                    title={social.label}
-                  >
-                    <social.icon className="w-5 h-5" />
-                  </motion.a>
+                <div>
+                  <h3 className="text-lg font-bold text-white">Rian Hasan Siam</h3>
+                  <p className="text-xs text-purple-400/60">Full Stack Developer</p>
+                </div>
+              </div>
+              <p className="text-white/25 text-sm leading-relaxed max-w-md mb-6">
+                Passionate about creating innovative web solutions with modern technologies.
+                Always eager to learn and tackle new challenges.
+              </p>
+              <div className="flex gap-3">
+                {socialLinks.map((s, i) => (
+                  <a key={i} href={s.url} target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-xl bg-white/[0.03] border border-white/[0.06] flex items-center justify-center text-white/20 hover:text-white hover:border-purple-500/30 transition-all duration-300" aria-label={s.label}>
+                    <s.icon size={14} />
+                  </a>
                 ))}
-              </motion.div>
+              </div>
             </div>
 
             {/* Quick Links */}
             <div>
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-                viewport={{ once: true }}
-              >
-                <h3 className="text-lg font-semibold text-white mb-4">Quick Links</h3>
-                <ul className="space-y-2">
-                  {quickLinks.map((link, index) => (
-                    <li key={index}>
-                      <a
-                        href={link.href}
-                        className="text-gray-400 hover:text-white transition-colors duration-300 hover:translate-x-1 inline-block"
-                      >
-                        {link.name}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </motion.div>
+              <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-white/40 mb-4">Quick Links</h4>
+              <ul className="space-y-2">
+                {quickLinks.map((link, i) => (
+                  <li key={i}>
+                    <a href={link.href} className="text-sm text-white/20 hover:text-white/60 transition-colors duration-300">{link.name}</a>
+                  </li>
+                ))}
+              </ul>
             </div>
 
             {/* Services */}
             <div>
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.4 }}
-                viewport={{ once: true }}
-              >
-                <h3 className="text-lg font-semibold text-white mb-4">Services</h3>
-                <ul className="space-y-2 text-gray-400">
-                  <li>Web Development</li>
-                  <li>Frontend Development</li>
-                  <li>Backend Development</li>
-                  <li>UI/UX Design</li>
-                  <li>Mobile Development</li>
-                </ul>
-              </motion.div>
+              <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-white/40 mb-4">Services</h4>
+              <ul className="space-y-2 text-sm text-white/20">
+                <li>Web Development</li>
+                <li>Frontend Development</li>
+                <li>Backend Development</li>
+                <li>UI/UX Design</li>
+              </ul>
             </div>
           </div>
         </div>
 
-        {/* Bottom Footer */}
-        <div className="border-t border-gray-800 py-8">
-          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-              className="flex items-center space-x-2 text-gray-400"
-            >
+        {/* Bottom */}
+        <div className="border-t border-white/[0.04] py-6">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+            <div className="flex items-center gap-1.5 text-xs text-white/15">
               <span>© {currentYear} Rian Hasan Siam. Made with</span>
-              <FaHeart className="text-red-500 animate-pulse" />
+              <FaHeart className="text-red-500/50" size={10} />
               <span>using Next.js</span>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-              className="flex items-center space-x-4"
-            >
-              <span className="text-gray-400 text-sm">
-                Designed & Built by Rian Hasan Siam
-              </span>
-              <motion.button
-                onClick={scrollToTop}
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white hover:shadow-lg transition-all duration-300"
-                title="Back to top"
-              >
-                <ArrowUp className="w-5 h-5" />
-              </motion.button>
-            </motion.div>
+            </div>
+            <div className="flex items-center gap-4">
+              <span className="text-xs text-white/15">Designed & Built by Rian Hasan Siam</span>
+              <button onClick={scrollToTop} className="w-8 h-8 rounded-full bg-white/[0.03] border border-white/[0.06] flex items-center justify-center text-white/20 hover:text-white hover:border-purple-500/30 transition-all duration-300" aria-label="Back to top">
+                <ArrowUp size={14} />
+              </button>
+            </div>
           </div>
         </div>
       </div>

@@ -1,154 +1,30 @@
 'use client'
 
-import { motion } from 'framer-motion'
-import { useInView } from 'react-intersection-observer'
-import { useState, useRef } from 'react'
-import { Mail, Phone, MapPin, Send, MessageCircle } from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { Mail, Phone, MapPin, Send } from 'lucide-react'
 import { FaGithub, FaLinkedin, FaInstagram, FaTelegram, FaFacebook } from 'react-icons/fa'
 import { useToast } from './CustomToast'
 import emailjs from '@emailjs/browser'
 
+gsap.registerPlugin(ScrollTrigger)
+
 const Contact = () => {
-  const [ref, inView] = useInView({
-    triggerOnce: false,
-    threshold: 0.1,
-  })
-
-  const { toast } = useToast()
+  const sectionRef = useRef(null)
+  const headingRef = useRef(null)
+  const leftRef = useRef(null)
+  const rightRef = useRef(null)
   const form = useRef()
-
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: '',
-  })
-
+  const { toast } = useToast()
+  const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' })
   const [errors, setErrors] = useState({})
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const validateField = (name, value) => {
-    switch (name) {
-      case 'name':
-        return value.length < 2 ? 'Name must be at least 2 characters' : ''
-      case 'email':
-        return !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) ? 'Invalid email address' : ''
-      case 'subject':
-        return value.length < 3 ? 'Subject must be at least 3 characters' : ''
-      case 'message':
-        return value.length < 10 ? 'Message must be at least 10 characters' : ''
-      default:
-        return ''
-    }
-  }
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }))
-    
-    // Real-time validation
-    setErrors(prev => ({
-      ...prev,
-      [name]: validateField(name, value)
-    }))
-  }
-
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    
-    // Validate all fields
-    const newErrors = {}
-    Object.keys(formData).forEach(key => {
-      newErrors[key] = validateField(key, formData[key])
-    })
-    
-    setErrors(newErrors)
-    setTouched({ name: true, email: true, subject: true, message: true })
-    
-    // Check if there are any errors
-    if (Object.values(newErrors).some(error => error !== '')) {
-      toast.error('Please fix the errors before submitting')
-      return
-    }
-    
-    setIsSubmitting(true)
-    
-    try {
-      const templateParams = {
-        from_name: formData.name,
-        user_email: formData.email,
-        phone: 'Not provided', // You can add phone field if needed
-        message: `Subject: ${formData.subject}\n\n${formData.message}`,
-        visit_time: new Date().toLocaleString()
-      }
-
-      // EmailJS credentials directly in the code
-      const serviceId = 'service_yrlxuma';
-      const templateId = 'template_0217uod';
-      const publicKey = 'TLs9u-trXhMYUsnMT';
-
-  const attemptSend = (retryCount = 0) => {
-        emailjs
-          .send(
-            serviceId, 
-            templateId, 
-    templateParams, 
-    // Use string form for wider EmailJS compatibility
-    publicKey
-          )
-          .then(
-            () => {
-              toast.success("Message sent successfully! I will get back to you soon.")
-              setFormData({ name: '', email: '', subject: '', message: '' })
-              setIsSubmitting(false)
-            },
-            (error) => {
-              console.log("Failed to send message:", error)
-              
-              if (retryCount < 2) {
-                setTimeout(() => {
-                  attemptSend(retryCount + 1)
-                }, 2000 * (retryCount + 1))
-              } else {
-                toast.error("Message couldn't be sent after multiple attempts. Please try again later.")
-                setIsSubmitting(false)
-              }
-            }
-          )
-      }
-
-      attemptSend()
-    } catch (error) {
-      toast.error('Failed to send message. Please try again.')
-      setIsSubmitting(false)
-    }
-  }
-
   const contactInfo = [
-    {
-      icon: Mail,
-      title: 'Email',
-      value: 'rianhasan1971@gmail.com',
-      href: 'mailto:rianhasan1971@gmail.com',
-      color: 'from-blue-500 to-cyan-500',
-    },
-    {
-      icon: Phone,
-      title: 'Phone',
-      value: '+880 1932600504',
-      href: 'tel:+8801932600504',
-      color: 'from-green-500 to-emerald-500',
-    },
-    {
-      icon: MapPin,
-      title: 'Location',
-      value: 'Dhaka, Bangladesh',
-      href: '#',
-      color: 'from-purple-500 to-pink-500',
-    },
+    { icon: Mail, title: 'Email', value: 'rianhasan1971@gmail.com', href: 'mailto:rianhasan1971@gmail.com' },
+    { icon: Phone, title: 'Phone', value: '+880 1932600504', href: 'tel:+8801932600504' },
+    { icon: MapPin, title: 'Location', value: 'Dhaka, Bangladesh', href: '#' },
   ]
 
   const socialLinks = [
@@ -159,247 +35,124 @@ const Contact = () => {
     { icon: FaTelegram, url: 'https://t.me/rianhasansiam', label: 'Telegram' },
   ]
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-      },
-    },
+  const validateField = (name, value) => {
+    switch (name) {
+      case 'name': return value.length < 2 ? 'Name must be at least 2 characters' : ''
+      case 'email': return !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) ? 'Invalid email' : ''
+      case 'subject': return value.length < 3 ? 'Subject must be at least 3 characters' : ''
+      case 'message': return value.length < 10 ? 'Message must be at least 10 characters' : ''
+      default: return ''
+    }
   }
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.8,
-        ease: 'easeOut',
-      },
-    },
+  const handleInputChange = (e) => {
+    const { name, value } = e.target
+    setFormData(prev => ({ ...prev, [name]: value }))
+    setErrors(prev => ({ ...prev, [name]: validateField(name, value) }))
   }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    const newErrors = {}
+    Object.keys(formData).forEach(key => { newErrors[key] = validateField(key, formData[key]) })
+    setErrors(newErrors)
+    if (Object.values(newErrors).some(err => err !== '')) { toast.error('Please fix errors before submitting'); return }
+    setIsSubmitting(true)
+    try {
+      const templateParams = { from_name: formData.name, user_email: formData.email, phone: 'Not provided', message: `Subject: ${formData.subject}\n\n${formData.message}`, visit_time: new Date().toLocaleString() }
+      await emailjs.send('service_yrlxuma', 'template_0217uod', templateParams, 'TLs9u-trXhMYUsnMT')
+      toast.success('Message sent successfully!')
+      setFormData({ name: '', email: '', subject: '', message: '' })
+    } catch { toast.error('Failed to send. Please try again.') }
+    setIsSubmitting(false)
+  }
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.from(headingRef.current?.children, { y: 60, opacity: 0, stagger: 0.12, duration: 0.9, ease: 'power3.out', scrollTrigger: { trigger: headingRef.current, start: 'top 82%', toggleActions: 'play none none reverse' } })
+      gsap.from(leftRef.current, { x: -80, opacity: 0, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: leftRef.current, start: 'top 85%', toggleActions: 'play none none reverse' } })
+      gsap.from(rightRef.current, { x: 80, opacity: 0, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: rightRef.current, start: 'top 85%', toggleActions: 'play none none reverse' } })
+    }, sectionRef)
+    return () => ctx.revert()
+  }, [])
 
   return (
-    <section id="contact" className="section-padding bg-gray-900/40 relative overflow-hidden">
-      {/* Background Elements */}
-      <div className="absolute inset-0">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl"></div>
-      </div>
+    <section id="contact" ref={sectionRef} className="scroll-panel relative py-32">
+      <div className="ambient-orb ambient-orb-1" style={{ bottom: '10%', right: '20%' }} />
+      <div className="container-custom relative z-10 px-4 sm:px-6 lg:px-8">
+        <div ref={headingRef} className="text-center mb-16">
+          <p className="text-xs uppercase tracking-[0.3em] text-purple-400/60 mb-4 font-medium">Let&apos;s talk</p>
+          <h2 className="text-4xl md:text-6xl font-bold text-white">Get In <span className="gradient-text">Touch</span></h2>
+        </div>
 
-      <div className="container-custom relative z-10">
-        <motion.div
-          ref={ref}
-          initial="hidden"
-          animate={inView ? "visible" : "hidden"}
-          variants={containerVariants}
-          className="text-center mb-16"
-        >
-          <motion.h2 
-            variants={itemVariants}
-            className="text-4xl md:text-5xl font-bold text-white mb-4 text-shadow"
-          >
-            Get In 
-            <span className="gradient-text ml-2">Touch</span>
-          </motion.h2>
-          <motion.p
-            variants={itemVariants}
-            className="text-xl text-gray-400 max-w-3xl mx-auto"
-          >
-            Have a project in mind or want to collaborate? I&apos;d love to hear from you! 
-            Let&apos;s discuss how we can work together.
-          </motion.p>
-        </motion.div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-          {/* Left side - Contact Info */}
-          <motion.div
-            variants={containerVariants}
-            className="space-y-8"
-          >
-            <motion.div
-              variants={itemVariants}
-              className="glass-effect p-8 rounded-2xl"
-            >
-              <div className="flex items-center gap-3 mb-6">
-                <MessageCircle className="w-6 h-6 text-blue-400" />
-                <h3 className="text-2xl font-bold text-white">Let&apos;s Connect</h3>
-              </div>
-              <p className="text-gray-300 mb-6 leading-relaxed">
-                I&apos;m always open to discussing new opportunities, creative projects, 
-                or potential collaborations. Feel free to reach out through any of the 
-                channels below.
-              </p>
-
-              {/* Contact Information */}
-              <div className="space-y-4">
-                {contactInfo.map((item, index) => (
-                  <motion.a
-                    key={index}
-                    href={item.href}
-                    whileHover={{ scale: 1.02 }}
-                    className="flex items-center gap-4 p-4 bg-gray-800/50 rounded-xl hover:bg-gray-800/70 transition-all duration-300 group"
-                  >
-                    <div className={`w-12 h-12 bg-gradient-to-r ${item.color} rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}>
-                      <item.icon className="w-6 h-6 text-white" />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          {/* Left - Info */}
+          <div ref={leftRef} className="space-y-6">
+            <div className="glass-card p-7">
+              <h3 className="text-lg font-bold text-white mb-5">Let&apos;s Connect</h3>
+              <p className="text-white/30 text-sm leading-relaxed mb-6">I&apos;m always open to discussing new opportunities, creative projects, or potential collaborations.</p>
+              <div className="space-y-3">
+                {contactInfo.map((item, i) => (
+                  <a key={i} href={item.href} className="flex items-center gap-4 p-3 rounded-xl bg-white/[0.02] border border-white/[0.04] hover:border-purple-500/20 transition-all duration-300 group">
+                    <div className="w-10 h-10 rounded-xl bg-gradient-to-r from-indigo-500/20 to-purple-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <item.icon className="w-4 h-4 text-purple-400" />
                     </div>
                     <div>
-                      <h4 className="font-semibold text-white">{item.title}</h4>
-                      <p className="text-gray-400">{item.value}</p>
+                      <h4 className="text-xs font-semibold text-white/60">{item.title}</h4>
+                      <p className="text-sm text-white/30">{item.value}</p>
                     </div>
-                  </motion.a>
+                  </a>
                 ))}
               </div>
-            </motion.div>
-
-            {/* Social Media */}
-            <motion.div
-              variants={itemVariants}
-              className="glass-effect p-8 rounded-2xl"
-            >
-              <h3 className="text-xl font-bold text-white mb-6">Follow Me</h3>
-              <div className="flex flex-wrap gap-4">
-                {socialLinks.map((social, index) => (
-                  <motion.a
-                    key={index}
-                    href={social.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    whileHover={{ scale: 1.1, y: -2 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="w-12 h-12 bg-gray-800 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-gradient-to-r hover:from-blue-500 hover:to-purple-600 transition-all duration-300"
-                    title={social.label}
-                  >
-                    <social.icon className="w-5 h-5" />
-                  </motion.a>
+            </div>
+            <div className="glass-card p-7">
+              <h3 className="text-sm font-bold text-white mb-4">Follow Me</h3>
+              <div className="flex gap-3">
+                {socialLinks.map((s, i) => (
+                  <a key={i} href={s.url} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-xl bg-white/[0.03] border border-white/[0.06] flex items-center justify-center text-white/30 hover:text-white hover:border-purple-500/30 hover:bg-white/[0.06] transition-all duration-300" aria-label={s.label}>
+                    <s.icon size={16} />
+                  </a>
                 ))}
               </div>
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
 
-          {/* Right side - Contact Form */}
-          <motion.div
-            variants={containerVariants}
-          >
-            <motion.div
-              variants={itemVariants}
-              className="glass-effect p-8 rounded-2xl"
-            >
-              <h3 className="text-2xl font-bold text-white mb-6">Send Message</h3>
-              
-              <form ref={form} onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Right - Form */}
+          <div ref={rightRef}>
+            <div className="glass-card p-7">
+              <h3 className="text-lg font-bold text-white mb-6">Send Message</h3>
+              <form ref={form} onSubmit={handleSubmit} className="space-y-5">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-2">
-                      Your Name
-                    </label>
-                    <input
-                      type="text"
-                      id="name"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleInputChange}
-                      className={`w-full px-4 py-3 bg-gray-800/50 border ${
-                        errors.name ? 'border-red-500' : 'border-gray-700'
-                      } rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300`}
-                      placeholder="Rian Hasan Siam"
-                    />
-                    {errors.name && (
-                      <p className="text-red-400 text-xs mt-1">{errors.name}</p>
-                    )}
-                    <p className="text-gray-500 text-xs mt-1">{formData.name.length}/50</p>
+                    <label className="block text-xs font-medium text-white/30 mb-2">Your Name</label>
+                    <input type="text" name="name" value={formData.name} onChange={handleInputChange} className="form-input-scroll" placeholder="Rian Hasan Siam" />
+                    {errors.name && <p className="text-red-400/80 text-xs mt-1">{errors.name}</p>}
                   </div>
-                  
                   <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
-                      Your Email
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      className={`w-full px-4 py-3 bg-gray-800/50 border ${
-                        errors.email ? 'border-red-500' : 'border-gray-700'
-                      } rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300`}
-                      placeholder="rianhasan1971@gmail.com"
-                    />
-                    {errors.email && (
-                      <p className="text-red-400 text-xs mt-1">{errors.email}</p>
-                    )}
+                    <label className="block text-xs font-medium text-white/30 mb-2">Your Email</label>
+                    <input type="email" name="email" value={formData.email} onChange={handleInputChange} className="form-input-scroll" placeholder="hello@example.com" />
+                    {errors.email && <p className="text-red-400/80 text-xs mt-1">{errors.email}</p>}
                   </div>
                 </div>
-
                 <div>
-                  <label htmlFor="subject" className="block text-sm font-medium text-gray-300 mb-2">
-                    Subject
-                  </label>
-                  <input
-                    type="text"
-                    id="subject"
-                    name="subject"
-                    value={formData.subject}
-                    onChange={handleInputChange}
-                    className={`w-full px-4 py-3 bg-gray-800/50 border ${
-                      errors.subject ? 'border-red-500' : 'border-gray-700'
-                    } rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300`}
-                    placeholder="Project Discussion"
-                  />
-                  {errors.subject && (
-                    <p className="text-red-400 text-xs mt-1">{errors.subject}</p>
-                  )}
-                  <p className="text-gray-500 text-xs mt-1">{formData.subject.length}/100</p>
+                  <label className="block text-xs font-medium text-white/30 mb-2">Subject</label>
+                  <input type="text" name="subject" value={formData.subject} onChange={handleInputChange} className="form-input-scroll" placeholder="Project Discussion" />
+                  {errors.subject && <p className="text-red-400/80 text-xs mt-1">{errors.subject}</p>}
                 </div>
-
                 <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-gray-300 mb-2">
-                    Message
-                  </label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    value={formData.message}
-                    onChange={handleInputChange}
-                    rows={6}
-                    className={`w-full px-4 py-3 bg-gray-800/50 border ${
-                      errors.message ? 'border-red-500' : 'border-gray-700'
-                    } rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 resize-none`}
-                    placeholder="Tell me about your project or idea..."
-                  />
-                  {errors.message && (
-                    <p className="text-red-400 text-xs mt-1">{errors.message}</p>
-                  )}
-                  <p className="text-gray-500 text-xs mt-1">{formData.message.length}/500</p>
+                  <label className="block text-xs font-medium text-white/30 mb-2">Message</label>
+                  <textarea name="message" value={formData.message} onChange={handleInputChange} rows={5} className="form-input-scroll resize-none" placeholder="Tell me about your project..." />
+                  {errors.message && <p className="text-red-400/80 text-xs mt-1">{errors.message}</p>}
                 </div>
-
-                <motion.button
-                  type="submit"
-                  disabled={isSubmitting}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="w-full btn-primary flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {isSubmitting ? (
-                    <>
-                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                      Sending...
-                    </>
-                  ) : (
-                    <>
-                      <Send className="w-5 h-5" />
-                      Send Message
-                    </>
-                  )}
-                </motion.button>
+                <button type="submit" disabled={isSubmitting} className="btn-primary w-full flex items-center justify-center gap-2 disabled:opacity-50">
+                  {isSubmitting ? <><div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> Sending...</> : <><Send size={16} /> Send Message</>}
+                </button>
               </form>
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
         </div>
       </div>
-  </section>
+    </section>
   )
 }
 

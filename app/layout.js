@@ -1,10 +1,10 @@
 import './globals.css'
-import { Inter } from 'next/font/google'
+import { Space_Grotesk } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { CustomToastProvider } from '../components/CustomToast'
 
-const inter = Inter({ subsets: ['latin'] })
+const spaceGrotesk = Space_Grotesk({ subsets: ['latin'], weight: ['300', '400', '500', '600', '700'] })
 
 export const viewport = {
   width: 'device-width',
@@ -12,8 +12,8 @@ export const viewport = {
   maximumScale: 5,
   userScalable: true,
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
-    { media: '(prefers-color-scheme: dark)', color: '#1f2937' },
+    { media: '(prefers-color-scheme: light)', color: '#050510' },
+    { media: '(prefers-color-scheme: dark)', color: '#050510' },
   ],
   colorScheme: 'dark light',
 }
@@ -612,11 +612,9 @@ export default function RootLayout({ children }) {
         <meta name="wot-verification" content="your-wot-verification-code" />
         <meta name="google-translate-customization" content="your-google-translate-customization-code" />
       </head>
-      <body className={inter.className}>
+      <body className={spaceGrotesk.className}>
         <CustomToastProvider>
-          <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
             {children}
-          </div>
         </CustomToastProvider>
   {/* Vercel Analytics & Speed Insights */}
   <Analytics />

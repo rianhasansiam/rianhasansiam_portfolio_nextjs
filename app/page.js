@@ -1,43 +1,35 @@
 'use client'
 
-import { useEffect } from 'react'
+import dynamic from 'next/dynamic'
 import Navbar from '../components/Navbar'
 import Hero from '../components/Hero'
-import Skills from '../components/Skills'
-import Education from '../components/Education'
-import Projects from '../components/Projects'
-import About from '../components/About'
-import Contact from '../components/Contact'
 import Footer from '../components/Footer'
-import AOS from 'aos'
-import 'aos/dist/aos.css'
+
+// Dynamic imports for scroll-heavy sections (code-split for perf)
+const ScrollEngine = dynamic(() => import('../components/ScrollEngine'), { ssr: false })
+const About = dynamic(() => import('../components/About'), { ssr: false })
+const Skills = dynamic(() => import('../components/Skills'), { ssr: false })
+const Projects = dynamic(() => import('../components/Projects'), { ssr: false })
+const Education = dynamic(() => import('../components/Education'), { ssr: false })
+const Contact = dynamic(() => import('../components/Contact'), { ssr: false })
 
 export default function Home() {
-  useEffect(() => {
-    AOS.init({
-      duration: 1000,
-      once: false,
-      easing: 'ease-in-out',
-      offset: 100,
-    })
-  }, [])
-
   return (
-    <>
+    <ScrollEngine>
       <header>
         <Navbar />
       </header>
-      <main className="min-h-screen" role="main">
+      <main role="main">
         <Hero />
-        <Skills />
-        <Education />
-        <Projects />
         <About />
+        <Skills />
+        <Projects />
+        <Education />
         <Contact />
       </main>
       <footer>
         <Footer />
       </footer>
-    </>
+    </ScrollEngine>
   )
 }

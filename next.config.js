@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  transpilePackages: ['@splinetool/runtime', '@splinetool/react-spline'],
   images: {
     domains: ['img.icons8.com'],
     unoptimized: true,

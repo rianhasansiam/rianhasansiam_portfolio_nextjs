@@ -1,254 +1,102 @@
 'use client'
 
-import { motion } from 'framer-motion'
-import { useInView } from 'react-intersection-observer'
-import { GraduationCap, Calendar, MapPin, Award } from 'lucide-react'
+import { useEffect, useRef } from 'react'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
+
+const educationData = [
+  { degree: 'B.Sc. in Software Engineering', institution: 'Daffodil International University', duration: '2025 - Present', location: 'Savar, Dhaka', highlights: ['Web Development','Software Architecture','Database Management','Data Structures & Algorithms'], color: 'from-indigo-500 to-purple-600' },
+  { degree: 'Higher Secondary Certificate (HSC)', institution: 'BCIC College', duration: '2019 - 2021', location: 'Mirpur-1, Dhaka', highlights: ['Science Group','Computer Science Fundamentals','1st place inter-college programming'], color: 'from-purple-500 to-pink-600' },
+  { degree: 'Secondary School Certificate (SSC)', institution: 'BCIC School', duration: '2011 - 2019', location: 'Mirpur-1, Dhaka', highlights: ['Science Group','Mathematics & Physics'], color: 'from-cyan-500 to-indigo-600' },
+]
 
 const Education = () => {
-  const [ref, inView] = useInView({
-    triggerOnce: false,
-    threshold: 0.1,
-  })
+  const sectionRef = useRef(null)
+  const headingRef = useRef(null)
+  const cardsRef = useRef([])
+  const lineRef = useRef(null)
 
-  const educationData = [
-    {
-      degree: 'Bachelor of Science in Software Engineering',
-      institution: 'Daffodil International University',
-      duration: '2025 - Present',
-      location: 'Savar,Dhaka, Bangladesh',
-      description: 'Currently pursuing my degree with a focus on web development, software architecture, and modern programming practices.',
-      grade: 'CGPA: 3.8/4.0',
-      highlights: [
-        'Web Development Specialization',
-        'Software Architecture & Design',
-        'Database Management Systems',
-        'Data Structures & Algorithms',
-        'Software Engineering Principles',
-      ],
-      icon: GraduationCap,
-      color: 'from-blue-500 to-purple-600',
-    },
-    {
-      degree: 'Higher Secondary Certificate (HSC)',
-      institution: 'BCIC College',
-      duration: '2019 - 2021',
-      location: 'Mirpur-1,Dhaka, Bangladesh',
-      description: 'Completed HSC in Science group with distinction, developing strong foundations in mathematics and sciences.',
-      grade: 'GPA: 5.0/5.0',
-      highlights: [
-        'Science Group (Mathematics, Physics, Chemistry)',
-        'Computer Science Fundamentals',
-        'Leadership in Sports Club',
-        'Achived 1st place in inter-college programming competition',
-      ],
-      icon: GraduationCap,
-      color: 'from-green-500 to-blue-600',
-    },
-     {
-      degree: 'Secondary School Certificate (SSC)',
-      institution: 'BCIC School',
-      duration: '2011 - 2021',
-      location: 'Mirpur-1,Dhaka, Bangladesh',
-      description: 'Completed SSC in Science group.',
-      grade: 'CGPA: 5.0/5.0',
-      highlights: [
-        'Science Group (Mathematics, Physics, Chemistry)',
-      ],
-      icon: GraduationCap,
-      color: 'from-blue-500 to-purple-600',
-    },
-  ]
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.from(headingRef.current?.children, { y: 60, opacity: 0, stagger: 0.12, duration: 0.9, ease: 'power3.out', scrollTrigger: { trigger: headingRef.current, start: 'top 82%', toggleActions: 'play none none reverse' } })
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.3,
-      },
-    },
-  }
+      // Timeline line grows with scroll
+      gsap.fromTo(lineRef.current, { scaleY: 0 }, { scaleY: 1, ease: 'none', scrollTrigger: { trigger: sectionRef.current, start: 'top 60%', end: 'bottom 80%', scrub: 1 } })
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.8,
-        ease: 'easeOut',
-      },
-    },
-  }
+      // Cards stagger reveal
+      cardsRef.current.forEach((card, i) => {
+        if (!card) return
+        gsap.from(card, {
+          x: i % 2 === 0 ? -80 : 80,
+          opacity: 0,
+          duration: 0.9,
+          ease: 'power3.out',
+          scrollTrigger: { trigger: card, start: 'top 85%', toggleActions: 'play none none reverse' },
+        })
+      })
+    }, sectionRef)
+    return () => ctx.revert()
+  }, [])
 
   return (
-    <section id="education" className="section-padding bg-gray-800/30 relative overflow-hidden">
-      {/* Background Elements */}
-      <div className="absolute inset-0">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl"></div>
-      </div>
+    <section id="education" ref={sectionRef} className="scroll-panel relative py-32">
+      <div className="ambient-orb ambient-orb-3" style={{ top: '10%', left: '60%' }} />
+      <div className="container-custom relative z-10 px-4 sm:px-6 lg:px-8">
+        <div ref={headingRef} className="text-center mb-20">
+          <p className="text-xs uppercase tracking-[0.3em] text-purple-400/60 mb-4 font-medium">My journey</p>
+          <h2 className="text-4xl md:text-6xl font-bold text-white">Education & <span className="gradient-text">Learning</span></h2>
+        </div>
 
-      <div className="container-custom relative z-10">
-        <motion.div
-          ref={ref}
-          initial="hidden"
-          animate={inView ? "visible" : "hidden"}
-          variants={containerVariants}
-          className="text-center mb-16"
-        >
-          <motion.h2 
-            variants={itemVariants}
-            className="text-4xl md:text-5xl font-bold text-white mb-4 text-shadow"
-          >
-            Education &
-            <span className="gradient-text ml-2">Learning</span>
-          </motion.h2>
-          <motion.p
-            variants={itemVariants}
-            className="text-xl text-gray-400 max-w-3xl mx-auto"
-          >
-            My educational journey has shaped my passion for technology and continuous learning.
-          </motion.p>
-        </motion.div>
+        <div className="max-w-4xl mx-auto relative">
+          {/* Timeline line */}
+          <div className="absolute left-1/2 top-0 bottom-0 w-px bg-white/[0.04] -translate-x-1/2 hidden md:block" />
+          <div ref={lineRef} className="absolute left-1/2 top-0 w-px bg-gradient-to-b from-indigo-500 to-purple-600 -translate-x-1/2 hidden md:block origin-top" style={{ height: '100%', transformOrigin: 'top' }} />
 
-        <div className="max-w-4xl mx-auto">
-          {/* Timeline */}
-          <div className="relative">
-            {/* Timeline line - background */}
-            <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gray-700 rounded-full hidden md:block"></div>
-            
-            {/* Animated Timeline Progress */}
-            <motion.div 
-              className="absolute left-1/2 transform -translate-x-1/2 w-1 bg-gradient-to-b from-blue-500 to-purple-600 rounded-full hidden md:block"
-              initial={{ height: 0 }}
-              animate={inView ? { height: '100%' } : { height: 0 }}
-              transition={{ duration: 2, ease: 'easeOut' }}
-            ></motion.div>
+          {educationData.map((item, i) => (
+            <div key={i} ref={el => cardsRef.current[i] = el} className={`relative flex items-center mb-16 ${i % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
+              {/* Dot */}
+              <div className="absolute left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 border-[3px] border-[#050510] z-10 hidden md:block shadow-lg shadow-indigo-500/30" />
 
-            {educationData.map((item, index) => (
-              <motion.div
-                key={index}
-                variants={itemVariants}
-                className={`relative flex items-center mb-16 ${
-                  index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
-                }`}
-              >
-                {/* Timeline dot */}
-                <motion.div 
-                  className="absolute left-1/2 transform -translate-x-1/2 w-6 h-6 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full border-4 border-gray-800 z-10 hidden md:block"
-                  initial={{ scale: 0, opacity: 0 }}
-                  animate={inView ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }}
-                  transition={{ delay: index * 0.3, type: 'spring', stiffness: 200 }}
-                  whileHover={{ scale: 1.5 }}
-                >
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full"
-                    animate={{ scale: [1, 1.5, 1], opacity: [0.5, 0, 0.5] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                  />
-                </motion.div>
-
-                {/* Content card */}
-                <div className={`w-full md:w-5/12 ${index % 2 === 0 ? 'md:pr-8' : 'md:pl-8'}`}>
-                  <motion.div
-                    whileHover={{ scale: 1.02 }}
-                    className="card p-8 relative overflow-hidden group"
-                  >
-                    {/* Background gradient */}
-                    <div className={`absolute inset-0 bg-gradient-to-br ${item.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`}></div>
-
-                    {/* Icon */}
-                    <div className={`inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r ${item.color} rounded-full mb-6`}>
-                      <item.icon className="w-8 h-8 text-white" />
+              <div className={`w-full md:w-5/12 ${i % 2 === 0 ? 'md:pr-10' : 'md:pl-10'}`}>
+                <div className="glass-card p-7 group hover:border-purple-500/20 transition-all duration-500 relative overflow-hidden">
+                  <div className={`absolute inset-0 bg-gradient-to-br ${item.color} opacity-0 group-hover:opacity-[0.04] transition-opacity duration-500`} />
+                  <div className="relative z-10">
+                    <div className={`inline-flex items-center justify-center w-12 h-12 bg-gradient-to-r ${item.color} rounded-2xl mb-5`}>
+                      <span className="text-white text-lg">🎓</span>
                     </div>
-
-                    {/* Content */}
-                    <div className="relative z-10">
-                      <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-blue-400 transition-colors duration-300">
-                        {item.degree}
-                      </h3>
-                      
-                      <div className="flex flex-wrap gap-4 mb-4 text-sm text-gray-400">
-                        <div className="flex items-center gap-1">
-                          <Calendar className="w-4 h-4" />
-                          {item.duration}
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <MapPin className="w-4 h-4" />
-                          {item.location}
-                        </div>
-                      </div>
-
-                      <h4 className="text-lg font-semibold text-blue-400 mb-2">
-                        {item.institution}
-                      </h4>
-
-                      <p className="text-gray-300 mb-4">
-                        {item.description}
-                      </p>
-
-                      {/* <div className="flex items-center gap-2 mb-4">
-                        <Award className="w-5 h-5 text-yellow-500" />
-                        <span className="text-yellow-400 font-semibold">{item.grade}</span>
-                      </div> */}
-
-                      {/* Highlights */}
-                      <div className="space-y-2">
-                        <h5 className="font-semibold text-white">Key Highlights:</h5>
-                        <ul className="space-y-1">
-                          {item.highlights.map((highlight, highlightIndex) => (
-                            <li key={highlightIndex} className="text-sm text-gray-400 flex items-start gap-2">
-                              <span className="w-1 h-1 bg-blue-500 rounded-full mt-2 flex-shrink-0"></span>
-                              {highlight}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
+                    <h3 className="text-lg font-bold text-white mb-1">{item.degree}</h3>
+                    <div className="flex flex-wrap gap-3 mb-3 text-xs text-white/30">
+                      <span>📅 {item.duration}</span>
+                      <span>📍 {item.location}</span>
                     </div>
-                  </motion.div>
+                    <h4 className="text-sm font-semibold text-purple-400/80 mb-3">{item.institution}</h4>
+                    <ul className="space-y-1.5">
+                      {item.highlights.map((h, j) => (
+                        <li key={j} className="text-xs text-white/30 flex items-start gap-2">
+                          <span className="w-1 h-1 rounded-full bg-indigo-500 mt-1.5 flex-shrink-0" />
+                          {h}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
-              </motion.div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Continuous Learning */}
+        <div className="max-w-3xl mx-auto glass-card p-8 text-center mt-8">
+          <h3 className="text-xl font-bold text-white mb-3">Continuous Learning</h3>
+          <p className="text-white/30 text-sm mb-6">Beyond formal education, I expand my knowledge through online courses, workshops, and hands-on projects.</p>
+          <div className="flex flex-wrap justify-center gap-2">
+            {['Modern Web Dev','Backend with Node.js','Mobile Apps','UI/UX Design','Problem-Solving'].map(s => (
+              <span key={s} className="px-3 py-1.5 bg-gradient-to-r from-indigo-500/20 to-purple-500/20 border border-indigo-500/20 text-white/70 rounded-full text-xs font-medium">{s}</span>
             ))}
           </div>
         </div>
-
-        {/* Additional Skills Section */}
-        <motion.div
-          variants={containerVariants}
-          className="mt-20 text-center"
-        >
-          <motion.div
-            variants={itemVariants}
-            className="glass-effect p-8 rounded-2xl max-w-4xl mx-auto"
-          >
-            <h3 className="text-2xl font-bold text-white mb-4">
-              Continuous Learning
-            </h3>
-            <p className="text-gray-300 mb-6">
-              Beyond formal education, I continuously expand my knowledge through online courses, 
-              workshops, and hands-on projects to stay updated with the latest technologies.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              {[
-                'Modern Web Development',
-                'Backend Development with Node.js',
-                'Mobile App Development',
-                'UI/UX Design',
-                'Machine Learning Basics',
-                'Problem-Solving',
-                'Team Collaboration',
-              ].map((skill) => (
-                <span
-                  key={skill}
-                  className="px-4 py-2 bg-gradient-to-r from-green-500 to-blue-600 text-white rounded-full font-semibold text-sm"
-                >
-                  {skill}
-                </span>
-              ))}
-            </div>
-          </motion.div>
-        </motion.div>
       </div>
     </section>
   )
