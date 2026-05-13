@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { ExternalLink, Eye, X } from 'lucide-react'
+import { ExternalLink, Eye, X, Github, ArrowUpRight } from 'lucide-react'
 import { FaGithub } from 'react-icons/fa'
 import Image from 'next/image'
 
@@ -20,6 +20,7 @@ const projects = [
     liveUrl: 'https://byte-edu-bd.vercel.app',
     githubUrl: 'https://github.com/rianhasansiam/ByteEdu',
     featured: true,
+    tag: 'SaaS · EdTech',
     panels: [
       { title: 'SuperAdmin Panel', description: 'Manage institutions, subscription plans, billing, global users, and platform-wide notices.' },
       { title: 'Admin Panel', description: 'Run school operations across students, teachers, classes, sections, attendance, assignments, and institution notices.' },
@@ -51,6 +52,7 @@ const projects = [
     liveUrl: 'https://digicammarket.com',
     githubUrl: 'https://github.com/rianhasansiam/digicam',
     featured: true,
+    tag: 'E-Commerce',
     panels: [
       { title: 'Customer Storefront', description: 'Browse products by category, search and filter inventory, inspect product details, save wishlist items, manage carts, apply coupons, complete checkout, upload advance-payment proof, and manage profile, orders, and reviews.' },
       { title: 'Admin Dashboard', description: 'Manage products, users, orders, categories, customer reviews, homepage banners, coupons, sales campaigns, shipping and tax settings, customer messages, and revenue or investment tracking.' },
@@ -72,9 +74,10 @@ const projects = [
     description: 'Full-stack e-commerce platform for tech gadgets, electronics, and engineering tools.',
     longDescription: 'EngineersGadget is a real-world online shopping system focused on product discovery, smooth purchasing flows, and practical store management from a single platform. It brings together a responsive storefront, account features, order workflows, and an admin dashboard for day-to-day commerce operations.',
     image: '/EngineersGadget.png',
-    technologies: ['Next.js 16', 'TypeScript', 'Tailwind CSS 4', 'MongoDB', 'NextAuth.js', 'Redux Toolkit', 'React Query', 'Framer Motion', 'Lucide React'],
+    technologies: ['Next.js 16', 'TypeScript', 'Tailwind CSS 4', 'MongoDB', 'NextAuth.js', 'Redux Toolkit', 'React Query', 'Framer Motion'],
     liveUrl: 'https://engineersgadget.com.bd',
     featured: true,
+    tag: 'E-Commerce',
     panels: [
       { title: 'Customer Shopping Experience', description: 'Browse featured products, categories, product details, advanced filters, search, wishlist, cart, and a responsive storefront experience.' },
       { title: 'User Account Features', description: 'Use email and password or Google authentication, manage profiles, review order history, submit reviews, and follow personalized shopping flows.' },
@@ -102,6 +105,7 @@ const projects = [
     liveUrl: 'https://sahaba-store.vercel.app',
     githubUrl: 'https://github.com/rianhasansiam/sahaba_store',
     featured: true,
+    tag: 'E-Commerce',
     panels: [
       { title: 'Customer Storefront', description: 'Browse products by category, view detailed product pages, add items to cart or wishlist, apply coupon codes, complete checkout, and receive order confirmation.' },
       { title: 'Admin Panel', description: 'Manage users, categories, products, orders, coupon codes, and store activity through a responsive dashboard interface.' },
@@ -123,16 +127,16 @@ const projects = [
     description: 'Modern hotel booking platform for room discovery, secure reservations, and smooth booking management.',
     longDescription: 'COZYSTAY is a guest-focused hospitality web app where users can explore rooms, review amenities, make reservations, manage bookings, and share feedback from one responsive interface.',
     image: '/assignment11.png',
-    technologies: ['Vite', 'Tailwind CSS', 'DaisyUI', 'Firebase Auth', 'Axios', 'React Hook Form', 'React DatePicker', 'React Leaflet', 'Swiper', 'SweetAlert2', 'React Toastify', 'MUI'],
+    technologies: ['Vite', 'Tailwind CSS', 'DaisyUI', 'Firebase Auth', 'Axios', 'React Hook Form', 'React DatePicker', 'React Leaflet', 'Swiper'],
     liveUrl: 'https://hotel-cozystay-client-side.vercel.app',
     githubUrl: 'https://github.com/rianhasansiam/Hotel_COZYSTAY_Client_Side',
     featured: false,
+    tag: 'Hospitality',
     panels: [
       { title: 'Room Discovery', description: 'Browse featured rooms, explore detailed room pages, compare amenities, view pricing, and filter rooms by budget.' },
       { title: 'Reservation Workflow', description: 'Authenticated users can book rooms with check-in and check-out dates, guest counts, room quantity, and live total-cost calculation.' },
       { title: 'Booking Management', description: 'Users can view reservations, update booking details, and cancel bookings through a protected account flow.' },
       { title: 'Review System', description: 'Guests can submit feedback tied to their bookings, while the app checks for existing reviews before allowing duplicate submissions.' },
-      { title: 'Interactive Experience', description: 'Sliders, modal flows, animated sections, and a location map create a more polished hotel browsing experience.' },
     ],
     highlights: [
       'Protected routes for booking-related actions',
@@ -153,39 +157,35 @@ const Projects = () => {
   const cardsRef = useRef([])
   const [selected, setSelected] = useState(null)
 
-  const leadProject = projects[0]
-  const supportingProjects = projects.slice(1)
-  const featuredCount = projects.filter(project => project.featured).length
-  const workflowCount = projects.reduce((total, project) => total + (project.panels?.length || 0), 0)
-  const stackCount = new Set(projects.flatMap(project => project.technologies)).size
+  const featuredProject = projects[0]
+  const gridProjects = projects.slice(1)
 
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.from(headingRef.current?.children || [], {
-        y: 60,
+        y: 40,
         opacity: 0,
-        stagger: 0.12,
-        duration: 0.9,
+        stagger: 0.1,
+        duration: 0.8,
         ease: 'power3.out',
         scrollTrigger: {
           trigger: headingRef.current,
-          start: 'top 82%',
+          start: 'top 85%',
           toggleActions: 'play none none reverse',
         },
       })
 
-      cardsRef.current.forEach(card => {
+      cardsRef.current.forEach((card) => {
         if (!card) return
-
         gsap.from(card, {
-          y: 80,
+          y: 50,
           opacity: 0,
-          scale: 0.95,
-          duration: 0.9,
+          scale: 0.97,
+          duration: 0.75,
           ease: 'power3.out',
           scrollTrigger: {
             trigger: card,
-            start: 'top 88%',
+            start: 'top 90%',
             toggleActions: 'play none none reverse',
           },
         })
@@ -197,282 +197,231 @@ const Projects = () => {
 
   return (
     <section id="projects" className="stacked-panel stacked-panel--projects" ref={sectionRef}>
-      <div className="panel-card py-32">
-        <div className="ambient-orb ambient-orb-2" style={{ top: '30%', right: '-5%' }} />
+      <div className="panel-card py-20">
+        <div className="ambient-orb ambient-orb-2" style={{ top: '20%', right: '-4%' }} />
 
         <div className="container-custom relative z-10 px-4 sm:px-6 lg:px-8">
-          <div className="projects-intro-grid mb-14">
-            <div ref={headingRef} className="max-w-3xl">
-              <p className="text-xs uppercase tracking-[0.3em] text-purple-400/60 mb-4 font-medium">
+
+          {/* ── Section Header ── */}
+          <div ref={headingRef} className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10">
+            <div>
+              <p className="text-[11px] uppercase tracking-[0.3em] text-purple-400/60 mb-2 font-medium">
                 Selected work
               </p>
-
-              <h2 className="text-4xl md:text-6xl font-bold text-white leading-tight">
-                Projects built for <span className="gradient-text">real workflows</span>
+              <h2 className="text-3xl md:text-4xl font-bold text-white leading-tight">
+                Projects built for{' '}
+                <span className="gradient-text">real workflows</span>
               </h2>
+            </div>
+            <div className="flex items-center gap-4 shrink-0">
+              {[
+                { val: projects.length, label: 'Builds' },
+                { val: new Set(projects.flatMap(p => p.technologies)).size, label: 'Tech' },
+                { val: projects.reduce((t, p) => t + (p.panels?.length || 0), 0), label: 'Flows' },
+              ].map(({ val, label }) => (
+                <div key={label} className="pj-stat-chip">
+                  <span className="pj-stat-val">{val}</span>
+                  <span className="pj-stat-lbl">{label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
 
-              <p className="text-white/40 text-base md:text-lg leading-relaxed mt-5 max-w-2xl">
-                A focused mix of SaaS platforms, commerce systems, and booking experiences with deeper architecture, richer admin tooling, and polished end-user flows.
+          {/* ── Featured Card ── */}
+          <div
+            ref={el => (cardsRef.current[0] = el)}
+            className="pj-featured group mb-6"
+          >
+            <div className="pj-featured-img">
+              <Image
+                src={featuredProject.image}
+                alt={featuredProject.title}
+                fill
+                className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-[#070714]/90 via-[#070714]/60 to-transparent" />
+              <div className="absolute inset-0 p-6 flex flex-col justify-between">
+                <div className="flex items-center gap-2">
+                  <span className="pj-pill pj-pill--cyan">Lead project</span>
+                  <span className="pj-pill pj-pill--dim">{featuredProject.tag}</span>
+                </div>
+                <div className="flex flex-wrap gap-1.5">
+                  {featuredProject.highlights?.slice(0, 2).map(h => (
+                    <span key={h} className="pj-pill pj-pill--overlay text-[10px]">{h}</span>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="pj-featured-body">
+              <div className="flex items-center gap-2 mb-3">
+                <span className="pj-pill pj-pill--purple">Flagship</span>
+                <span className="pj-pill pj-pill--dim">{featuredProject.technologies.length} stack pieces</span>
+              </div>
+
+              <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-purple-200 transition-colors">
+                {featuredProject.title}
+              </h3>
+
+              <p className="text-white/40 text-sm leading-relaxed mb-4">
+                {featuredProject.description}
               </p>
-            </div>
 
-            <div className="projects-metrics-grid">
-              <div className="project-metric">
-                <span className="project-metric-value">{projects.length}</span>
-                <span className="project-metric-label">Showcased builds</span>
+              <div className="flex flex-wrap gap-1.5 mb-5">
+                {featuredProject.technologies.slice(0, 6).map(t => (
+                  <span key={t} className="pj-tech-tag">{t}</span>
+                ))}
               </div>
 
-              <div className="project-metric">
-                <span className="project-metric-value">{featuredCount}</span>
-                <span className="project-metric-label">Flagship projects</span>
-              </div>
-
-              <div className="project-metric">
-                <span className="project-metric-value">{workflowCount}</span>
-                <span className="project-metric-label">Product flows mapped</span>
-              </div>
-
-              <div className="project-metric">
-                <span className="project-metric-value">{stackCount}</span>
-                <span className="project-metric-label">Technologies featured</span>
-              </div>
-            </div>
-          </div>
-
-          <div ref={el => (cardsRef.current[0] = el)} className="project-card-scroll project-card-scroll--lead group mb-8">
-            <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,1.12fr)_minmax(360px,0.88fr)]">
-              <div className="project-preview-frame relative min-h-[320px] md:min-h-[420px]">
-                <Image
-                  src={leadProject.image}
-                  alt={leadProject.title}
-                  fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
-                />
-
-                <div className="absolute inset-0 bg-gradient-to-tr from-[#070714] via-[#070714]/45 to-transparent" />
-
-                <div className="absolute inset-x-5 top-5 flex items-center justify-between gap-3">
-                  <span className="project-status-pill">Lead case study</span>
-                  <span className="project-status-pill project-status-pill--muted">
-                    {leadProject.panels?.length || 0} mapped flows
-                  </span>
-                </div>
-
-                <div className="absolute inset-x-5 bottom-5 flex flex-wrap gap-2">
-                  {leadProject.highlights?.slice(0, 3).map(item => (
-                    <span key={item} className="project-overlay-pill">
-                      {item}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              <div className="p-6 md:p-8 xl:p-10 flex flex-col">
-                <div className="flex flex-wrap items-center gap-2 mb-5">
-                  <span className="project-inline-pill">Flagship build</span>
-                  <span className="project-inline-pill project-inline-pill--soft">
-                    {leadProject.technologies.length} stack pieces
-                  </span>
-                </div>
-
-                <h3 className="text-3xl md:text-4xl font-bold text-white mb-4 group-hover:text-purple-200 transition-colors">
-                  {leadProject.title}
-                </h3>
-
-                <p className="text-white/40 leading-relaxed mb-6">
-                  {leadProject.longDescription || leadProject.description}
-                </p>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
-                  {leadProject.panels?.slice(0, 4).map(panel => (
-                    <div key={panel.title} className="project-flow-chip">
-                      <span className="project-flow-title">{panel.title}</span>
-                      <span className="project-flow-copy">{panel.description}</span>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="flex flex-wrap gap-2 mb-7">
-                  {leadProject.technologies.slice(0, 6).map(technology => (
-                    <span key={technology} className="project-tech-pill">
-                      {technology}
-                    </span>
-                  ))}
-                </div>
-
-                <div className="flex flex-wrap items-center gap-3 mt-auto">
-                  <button type="button" onClick={() => setSelected(leadProject)} className="project-primary-action">
-                    <Eye size={16} /> Explore details
-                  </button>
-
-                  {leadProject.liveUrl && (
-                    <a href={leadProject.liveUrl} target="_blank" rel="noopener noreferrer" className="project-link-action">
-                      <ExternalLink size={15} /> Live product
-                    </a>
-                  )}
-
-                  {leadProject.githubUrl && (
-                    <a href={leadProject.githubUrl} target="_blank" rel="noopener noreferrer" className="project-link-action">
-                      <FaGithub size={15} /> Source
-                    </a>
-                  )}
-                </div>
+              <div className="flex flex-wrap items-center gap-2 mt-auto">
+                <button
+                  type="button"
+                  onClick={() => setSelected(featuredProject)}
+                  className="pj-btn-primary"
+                >
+                  <Eye size={14} /> Details
+                </button>
+                {featuredProject.liveUrl && (
+                  <a href={featuredProject.liveUrl} target="_blank" rel="noopener noreferrer" className="pj-btn-ghost">
+                    <ArrowUpRight size={14} /> Live
+                  </a>
+                )}
+                {featuredProject.githubUrl && (
+                  <a href={featuredProject.githubUrl} target="_blank" rel="noopener noreferrer" className="pj-btn-ghost">
+                    <FaGithub size={13} /> Code
+                  </a>
+                )}
               </div>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-14">
-            {supportingProjects.map((p, i) => (
-              <div key={p.id} ref={el => (cardsRef.current[i + 1] = el)} className="project-card-scroll project-card-scroll--tile group">
-                <div className="flex h-full flex-col">
-                  <div className="relative h-64 overflow-hidden">
-                    <Image
-                      src={p.image}
-                      alt={p.title}
-                      fill
-                      className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
-                    />
+          {/* ── Project Grid ── */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-8">
+            {gridProjects.map((p, i) => (
+              <div
+                key={p.id}
+                ref={el => (cardsRef.current[i + 1] = el)}
+                className="pj-card group"
+              >
+                <div className="pj-card-img relative">
+                  <Image
+                    src={p.image}
+                    alt={p.title}
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-[1.06]"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#070714]/85 via-[#070714]/30 to-transparent" />
+                  <div className="absolute top-3 left-3 right-3 flex items-center justify-between">
+                    <span className={`pj-pill ${p.featured ? 'pj-pill--cyan' : 'pj-pill--dim'}`}>
+                      {p.featured ? 'Featured' : 'Selected'}
+                    </span>
+                    <span className="pj-pill pj-pill--dim text-[10px]">{p.tag}</span>
+                  </div>
+                </div>
 
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#070714] via-[#070714]/35 to-transparent" />
+                <div className="p-4 flex flex-col flex-1">
+                  <h3 className="text-base font-bold text-white mb-1 group-hover:text-purple-200 transition-colors leading-snug">
+                    {p.title}
+                  </h3>
+                  <p className="text-white/38 text-xs leading-relaxed mb-3 line-clamp-2">
+                    {p.description}
+                  </p>
 
-                    <div className="absolute inset-x-5 top-5 flex items-center justify-between gap-3">
-                      {p.featured ? (
-                        <span className="project-status-pill">Featured</span>
-                      ) : (
-                        <span className="project-status-pill project-status-pill--muted">Selected</span>
-                      )}
-
-                      <span className="project-status-pill project-status-pill--muted">
-                        {p.panels?.length || 0} flows
-                      </span>
-                    </div>
+                  <div className="flex flex-wrap gap-1 mb-4">
+                    {p.technologies.slice(0, 3).map(t => (
+                      <span key={t} className="pj-tech-tag">{t}</span>
+                    ))}
+                    {p.technologies.length > 3 && (
+                      <span className="pj-tech-tag">+{p.technologies.length - 3}</span>
+                    )}
                   </div>
 
-                  <div className="p-6 flex flex-1 flex-col">
-                    <div className="flex items-start justify-between gap-4 mb-4">
-                      <div>
-                        <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-purple-200 transition-colors">
-                          {p.title}
-                        </h3>
-
-                        <p className="text-white/40 text-sm leading-relaxed">
-                          {p.description}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-3 mb-5">
-                      <div className="project-mini-stat">
-                        <span>{p.highlights?.length || 0}</span>
-                        <small>engineering notes</small>
-                      </div>
-
-                      <div className="project-mini-stat">
-                        <span>{p.technologies.length}</span>
-                        <small>tools in stack</small>
-                      </div>
-                    </div>
-
-                    <div className="flex flex-wrap gap-2 mb-6">
-                      {p.technologies.slice(0, 5).map(technology => (
-                        <span key={technology} className="project-tech-pill">
-                          {technology}
-                        </span>
-                      ))}
-                    </div>
-
-                    <div className="flex flex-wrap items-center gap-3 mt-auto">
-                      <button type="button" onClick={() => setSelected(p)} className="project-primary-action project-primary-action--compact">
-                        <Eye size={15} /> Details
-                      </button>
-
-                      {p.liveUrl && (
-                        <a href={p.liveUrl} target="_blank" rel="noopener noreferrer" className="project-link-action">
-                          <ExternalLink size={15} /> Live
-                        </a>
-                      )}
-
-                      {p.githubUrl && (
-                        <a href={p.githubUrl} target="_blank" rel="noopener noreferrer" className="project-link-action">
-                          <FaGithub size={15} /> Code
-                        </a>
-                      )}
-                    </div>
+                  <div className="flex items-center gap-2 mt-auto">
+                    <button
+                      type="button"
+                      onClick={() => setSelected(p)}
+                      className="pj-btn-primary pj-btn-primary--sm"
+                    >
+                      <Eye size={12} /> View
+                    </button>
+                    {p.liveUrl && (
+                      <a href={p.liveUrl} target="_blank" rel="noopener noreferrer" className="pj-btn-icon" title="Live">
+                        <ArrowUpRight size={14} />
+                      </a>
+                    )}
+                    {p.githubUrl && (
+                      <a href={p.githubUrl} target="_blank" rel="noopener noreferrer" className="pj-btn-icon" title="GitHub">
+                        <FaGithub size={13} />
+                      </a>
+                    )}
                   </div>
                 </div>
               </div>
             ))}
           </div>
 
-          <div className="projects-cta-band">
+          {/* ── CTA Strip ── */}
+          <div className="pj-cta-strip">
             <div>
-              <p className="text-xs uppercase tracking-[0.3em] text-purple-400/60 mb-3 font-medium">
+              <p className="text-[11px] uppercase tracking-[0.3em] text-purple-400/60 mb-1 font-medium">
                 More experiments
               </p>
-
-              <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">
+              <h3 className="text-lg font-bold text-white">
                 The rest of the archive lives on GitHub.
               </h3>
-
-              <p className="text-white/40 text-sm md:text-base leading-relaxed max-w-2xl">
-                Browse additional builds, source code, and smaller explorations beyond the selected case studies shown here.
-              </p>
             </div>
-
             <a
               href="https://github.com/rianhasansiam"
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-primary inline-flex items-center justify-center gap-2 whitespace-nowrap"
+              className="btn-primary inline-flex items-center justify-center gap-2 whitespace-nowrap !py-2.5 !px-6 !text-sm"
             >
-              <FaGithub size={18} /> View GitHub
+              <FaGithub size={15} /> View GitHub
             </a>
           </div>
         </div>
       </div>
 
+      {/* ── Detail Modal ── */}
       {selected && (
         <>
-          <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[200]" onClick={() => setSelected(null)} />
-
-          <div className="fixed inset-4 md:inset-8 lg:inset-16 z-[201] overflow-auto">
-            <div className="glass-card p-6 md:p-8 max-w-5xl mx-auto relative" style={{ background: 'rgba(10,10,30,0.95)' }}>
+          <div
+            className="fixed inset-0 bg-black/75 backdrop-blur-sm z-[200]"
+            onClick={() => setSelected(null)}
+          />
+          <div className="fixed inset-3 md:inset-8 lg:inset-14 z-[201] overflow-auto">
+            <div className="glass-card p-5 md:p-7 max-w-4xl mx-auto relative" style={{ background: 'rgba(10,10,30,0.96)' }}>
               <button
                 type="button"
                 onClick={() => setSelected(null)}
-                className="absolute top-4 right-4 text-white/30 hover:text-white bg-white/5 rounded-full p-2"
+                className="absolute top-3 right-3 text-white/30 hover:text-white bg-white/5 hover:bg-white/10 rounded-full p-1.5 transition-all"
               >
-                <X size={20} />
+                <X size={17} />
               </button>
 
-              <div className="relative w-full h-64 md:h-96 rounded-2xl overflow-hidden mb-6">
+              <div className="relative w-full h-44 md:h-64 rounded-xl overflow-hidden mb-5">
                 <Image src={selected.image} alt={selected.title} fill className="object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#070714]/70 to-transparent" />
               </div>
 
-              <h3 className="text-3xl font-bold gradient-text mb-4">
-                {selected.title}
-              </h3>
+              <div className="flex items-center gap-2 mb-3">
+                {selected.tag && <span className="pj-pill pj-pill--purple">{selected.tag}</span>}
+              </div>
 
-              <p className="text-white/40 leading-relaxed mb-6">
+              <h3 className="text-2xl font-bold gradient-text mb-2">{selected.title}</h3>
+
+              <p className="text-white/40 text-sm leading-relaxed mb-5">
                 {selected.longDescription || selected.description}
               </p>
 
               {selected.panels && (
-                <div className="mb-6">
-                  <h4 className="text-sm font-semibold uppercase tracking-[0.2em] text-white/50 mb-3">
-                    Platform Panels
-                  </h4>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div className="mb-5">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/40 mb-2">Platform Panels</p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                     {selected.panels.map(panel => (
-                      <div key={panel.title} className="rounded-lg border border-white/[0.08] bg-white/[0.03] p-4">
-                        <h5 className="text-sm font-semibold text-white mb-2">
-                          {panel.title}
-                        </h5>
-
-                        <p className="text-sm leading-relaxed text-white/40">
-                          {panel.description}
-                        </p>
+                      <div key={panel.title} className="rounded-xl border border-white/[0.07] bg-white/[0.03] p-3">
+                        <h5 className="text-xs font-semibold text-white mb-1">{panel.title}</h5>
+                        <p className="text-xs leading-relaxed text-white/38">{panel.description}</p>
                       </div>
                     ))}
                   </div>
@@ -480,65 +429,48 @@ const Projects = () => {
               )}
 
               {selected.highlights && (
-                <div className="mb-6">
-                  <h4 className="text-sm font-semibold uppercase tracking-[0.2em] text-white/50 mb-3">
-                    Engineering Focus
-                  </h4>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                <div className="mb-5">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/40 mb-2">Engineering Focus</p>
+                  <div className="flex flex-wrap gap-1.5">
                     {selected.highlights.map(item => (
-                      <div key={item} className="rounded-lg border border-indigo-500/20 bg-indigo-500/[0.08] px-4 py-3 text-sm text-white/60">
+                      <span key={item} className="px-3 py-1.5 rounded-lg border border-indigo-500/20 bg-indigo-500/[0.07] text-xs text-white/60">
                         {item}
-                      </div>
+                      </span>
                     ))}
                   </div>
                 </div>
               )}
 
-              <div className="flex flex-wrap gap-2 mb-6">
-                {selected.technologies.map(technology => (
-                  <span key={technology} className="px-4 py-2 bg-indigo-500/20 border border-indigo-500/20 text-white/80 rounded-lg text-sm">
-                    {technology}
-                  </span>
+              <div className="flex flex-wrap gap-1.5 mb-5">
+                {selected.technologies.map(t => (
+                  <span key={t} className="pj-tech-tag">{t}</span>
                 ))}
               </div>
 
               {selected.demoCredentials && (
-                <div className="mb-6">
-                  <h4 className="text-sm font-semibold uppercase tracking-[0.2em] text-white/50 mb-3">
-                    Demo Credentials
-                  </h4>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    {selected.demoCredentials.map(credential => (
-                      <div key={credential.role} className="rounded-lg border border-white/[0.08] bg-white/[0.03] p-4">
-                        <p className="text-sm font-semibold text-white mb-2">
-                          {credential.role}
-                        </p>
-
-                        <p className="text-sm text-white/50">
-                          Email: {credential.email}
-                        </p>
-
-                        <p className="text-sm text-white/50">
-                          Password: {credential.password}
-                        </p>
+                <div className="mb-5">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/40 mb-2">Demo Credentials</p>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    {selected.demoCredentials.map(c => (
+                      <div key={c.role} className="rounded-xl border border-white/[0.07] bg-white/[0.03] p-3">
+                        <p className="text-xs font-semibold text-white mb-1">{c.role}</p>
+                        <p className="text-xs text-white/45">{c.email}</p>
+                        <p className="text-xs text-white/45">{c.password}</p>
                       </div>
                     ))}
                   </div>
                 </div>
               )}
 
-              <div className="flex gap-4">
+              <div className="flex gap-3">
                 {selected.liveUrl && (
-                  <a href={selected.liveUrl} target="_blank" rel="noopener noreferrer" className="btn-primary flex items-center gap-2">
-                    <ExternalLink size={18} /> Live Demo
+                  <a href={selected.liveUrl} target="_blank" rel="noopener noreferrer" className="btn-primary flex items-center gap-2 !py-2.5 !px-5 !text-sm">
+                    <ExternalLink size={15} /> Live Demo
                   </a>
                 )}
-
                 {selected.githubUrl && (
-                  <a href={selected.githubUrl} target="_blank" rel="noopener noreferrer" className="btn-secondary flex items-center gap-2">
-                    <FaGithub size={18} /> Source
+                  <a href={selected.githubUrl} target="_blank" rel="noopener noreferrer" className="btn-secondary flex items-center gap-2 !py-2.5 !px-5 !text-sm">
+                    <FaGithub size={15} /> Source
                   </a>
                 )}
               </div>

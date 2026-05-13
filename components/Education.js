@@ -1,15 +1,16 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import Image from 'next/image'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 gsap.registerPlugin(ScrollTrigger)
 
 const educationData = [
-  { degree: 'B.Sc. in Software Engineering', institution: 'Daffodil International University', duration: '2025 - Present', location: 'Savar, Dhaka', highlights: ['Web Development','Software Architecture','Database Management','DSA'], color: 'from-indigo-500 to-purple-600' },
-  { degree: 'Higher Secondary Certificate (HSC)', institution: 'BCIC College', duration: '2019 - 2021', location: 'Mirpur-1, Dhaka', highlights: ['Science Group','CS Fundamentals','1st place programming'], color: 'from-purple-500 to-pink-600' },
-  { degree: 'Secondary School Certificate (SSC)', institution: 'BCIC School', duration: '2011 - 2019', location: 'Mirpur-1, Dhaka', highlights: ['Science Group','Mathematics & Physics'], color: 'from-cyan-500 to-indigo-600' },
+  { degree: 'B.Sc. in Software Engineering', institution: 'Daffodil International University', duration: '2025 - Present', location: 'Savar, Dhaka', highlights: ['Web Development','Software Architecture','Database Management','DSA'], color: 'from-indigo-500 to-purple-600', icon: 'https://img.icons8.com/?size=100&id=109679&format=png&color=000000' },
+  { degree: 'Higher Secondary Certificate (HSC)', institution: 'BCIC College', duration: '2019 - 2021', location: 'Mirpur-1, Dhaka', highlights: ['Science Group','CS Fundamentals','1st place programming'], color: 'from-purple-500 to-pink-600', icon: 'https://img.icons8.com/?size=100&id=EdByclgjacJf&format=png&color=000000' },
+  { degree: 'Secondary School Certificate (SSC)', institution: 'BCIC School', duration: '2011 - 2019', location: 'Mirpur-1, Dhaka', highlights: ['Science Group','Mathematics & Physics'], color: 'from-cyan-500 to-indigo-600', icon: 'https://img.icons8.com/?size=100&id=114259&format=png&color=000000' },
 ]
 
 const Education = () => {
@@ -49,7 +50,7 @@ const Education = () => {
                   <div className="glass-card p-7 group hover:border-purple-500/20 transition-all duration-500 relative overflow-hidden">
                     <div className={`absolute inset-0 bg-gradient-to-br ${item.color} opacity-0 group-hover:opacity-[0.04] transition-opacity duration-500`} />
                     <div className="relative z-10">
-                      <div className={`inline-flex items-center justify-center w-12 h-12 bg-gradient-to-r ${item.color} rounded-2xl mb-5`}><span className="text-white text-lg">🎓</span></div>
+                      <Image src={item.icon} alt="education icon" width={36} height={36} unoptimized className="mb-4" />
                       <h3 className="text-lg font-bold text-white mb-1">{item.degree}</h3>
                       <div className="flex flex-wrap gap-3 mb-3 text-xs text-white/30"><span>📅 {item.duration}</span><span>📍 {item.location}</span></div>
                       <h4 className="text-sm font-semibold text-purple-400/80 mb-3">{item.institution}</h4>
