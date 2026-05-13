@@ -1,4 +1,5 @@
 export async function GET() {
+  const publishedAt = new Date('2026-05-13T00:00:00.000Z').toUTCString()
   const rss = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
@@ -7,7 +8,7 @@ export async function GET() {
     <link>https://rianhasansiam.me</link>
     <atom:link href="https://rianhasansiam.me/rss.xml" rel="self" type="application/rss+xml"/>
     <language>en-us</language>
-    <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
+    <lastBuildDate>${publishedAt}</lastBuildDate>
     <generator>Next.js</generator>
     <webMaster>rianhasan1971@gmail.com (Rian Hasan Siam)</webMaster>
     <managingEditor>rianhasan1971@gmail.com (Rian Hasan Siam)</managingEditor>
@@ -27,7 +28,7 @@ export async function GET() {
       <description>Professional portfolio showcasing 50+ projects and 2+ years of experience in React, Next.js, Node.js, and modern web technologies.</description>
       <link>https://rianhasansiam.me</link>
       <guid isPermaLink="true">https://rianhasansiam.me</guid>
-      <pubDate>${new Date().toUTCString()}</pubDate>
+      <pubDate>${publishedAt}</pubDate>
       <category>Portfolio</category>
       <category>Full Stack Development</category>
     </item>

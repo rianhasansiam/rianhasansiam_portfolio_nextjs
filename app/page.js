@@ -1,17 +1,12 @@
-'use client'
-
-import dynamic from 'next/dynamic'
 import Navbar from '../components/Navbar'
 import Hero from '../components/Hero'
+import ScrollEngine from '@/components/ScrollEngine'
+import About from '../components/About'
+import Skills from '../components/Skills'
+import Projects from '../components/Projects'
+import Education from '../components/Education'
+import Contact from '../components/Contact'
 import Footer from '../components/Footer'
-
-// Dynamic imports for code-splitting
-const ScrollEngine = dynamic(() => import('@/components/ScrollEngine'), { ssr: false })
-const About = dynamic(() => import('../components/About'), { ssr: false })
-const Skills = dynamic(() => import('../components/Skills'), { ssr: false })
-const Projects = dynamic(() => import('../components/Projects'), { ssr: false })
-const Education = dynamic(() => import('../components/Education'), { ssr: false })
-const Contact = dynamic(() => import('../components/Contact'), { ssr: false })
 
 export default function Home() {
   return (

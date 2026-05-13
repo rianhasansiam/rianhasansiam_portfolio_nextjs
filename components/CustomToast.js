@@ -5,11 +5,18 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { CheckCircle, XCircle, X } from 'lucide-react'
 
 const ToastContext = createContext()
+const toastFallback = {
+  toast: {
+    success: () => {},
+    error: () => {},
+  },
+  removeToast: () => {},
+}
 
 export const useToast = () => {
   const context = useContext(ToastContext)
   if (!context) {
-    throw new Error('useToast must be used within a ToastProvider')
+    return toastFallback
   }
   return context
 }
