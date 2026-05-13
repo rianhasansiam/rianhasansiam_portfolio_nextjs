@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Menu, X } from "lucide-react";
 
 const Navbar = () => {
@@ -36,10 +37,12 @@ const Navbar = () => {
           {/* Logo */}
           <div>
             <Link href="#home" className="flex items-center gap-3 group">
-              <div className="w-10 h-10 rounded-full overflow-hidden border border-white/10 group-hover:border-purple-500/30 transition-all duration-300">
-                <img
+              <div className="relative w-10 h-10 rounded-full overflow-hidden border border-white/10 group-hover:border-purple-500/30 transition-all duration-300">
+                <Image
                   src="/rianface.jpg"
                   alt="R"
+                  fill
+                  sizes="40px"
                   className="w-full h-full object-cover"
                 />
               </div>

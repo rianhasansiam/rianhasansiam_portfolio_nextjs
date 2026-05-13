@@ -9,6 +9,7 @@ import {
   FaHeart,
 } from "react-icons/fa";
 import { ArrowUp } from "lucide-react";
+import Image from "next/image";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -55,10 +56,12 @@ const Footer = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
                 <div className="lg:col-span-2">
                   <div className="flex items-center gap-3 mb-4">
-                    <div className="w-10 h-10 rounded-full overflow-hidden border border-white/10">
-                      <img
+                    <div className="relative w-10 h-10 rounded-full overflow-hidden border border-white/10">
+                      <Image
                         src="/rianface.jpg"
                         alt="R"
+                        fill
+                        sizes="40px"
                         className="w-full h-full object-cover"
                       />
                     </div>

@@ -14,8 +14,10 @@
     "module": "esnext",
     "esModuleInterop": true,
     "moduleResolution": "bundler",
-    "baseUrl": ".",
     "paths": {
+      "*": [
+        "./*"
+      ],
       "@/*": [
         "./*"
       ]
