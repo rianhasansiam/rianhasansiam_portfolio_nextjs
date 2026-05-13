@@ -1,34 +1,34 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from 'react'
-import Link from 'next/link'
-import { Menu, X } from 'lucide-react'
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { Menu, X } from "lucide-react";
 
 const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false)
-  const [scrolled, setScrolled] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   const navItems = [
-    { name: 'Home', href: '#home' },
-    { name: 'About', href: '#about' },
-    { name: 'Skills', href: '#skills' },
-    { name: 'Projects', href: '#projects' },
-    { name: 'Education', href: '#education' },
-    { name: 'Contact', href: '#contact' },
-  ]
+    { name: "Home", href: "#home" },
+    { name: "About", href: "#about" },
+    { name: "Skills", href: "#skills" },
+    { name: "Projects", href: "#projects" },
+    { name: "Education", href: "#education" },
+    { name: "Contact", href: "#contact" },
+  ];
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50)
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+    const handleScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-[9990] transition-all duration-500 ${
         scrolled
-          ? 'bg-[#050510]/90 border-b border-white/[0.04] shadow-xl shadow-black/20'
-          : 'bg-transparent'
+          ? "bg-[#050510]/90 border-b border-white/[0.04] shadow-xl shadow-black/20"
+          : "bg-transparent"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -37,7 +37,11 @@ const Navbar = () => {
           <div>
             <Link href="#home" className="flex items-center gap-3 group">
               <div className="w-10 h-10 rounded-full overflow-hidden border border-white/10 group-hover:border-purple-500/30 transition-all duration-300">
-                <img src="/rianface.jpg" alt="R" className="w-full h-full object-cover" />
+                <img
+                  src="/rianface.jpg"
+                  alt="R"
+                  className="w-full h-full object-cover"
+                />
               </div>
               <span className="text-white font-bold text-lg hidden sm:block tracking-wide">
                 Rian<span className="gradient-text">Hasan</span>
@@ -81,7 +85,7 @@ const Navbar = () => {
         {/* Mobile Menu */}
         <div
           className={`lg:hidden overflow-hidden transition-all duration-500 bg-[#070716] ${
-            isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+            isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
           }`}
         >
           <div className="flex flex-col items-center gap-2 py-6 border-t border-white/[0.04]">
@@ -106,7 +110,7 @@ const Navbar = () => {
         </div>
       </div>
     </nav>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;
